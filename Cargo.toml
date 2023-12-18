@@ -3,6 +3,7 @@ resolver = "2"
 
 members = [
     "zk-guess-the-number",
+    "zk-sabotage",
 ]
 
 [workspace.package]

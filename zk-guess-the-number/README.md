@@ -1,19 +1,13 @@
-# Zero Knowledge average salary
+# Zero Knowledge Guess the Number Game
 
-Simple Average Salary contract
-Average salary is a common multi-party computation example, where several privacy-concious
-individuals are interested in determining whether they are getting a fair salary, without
-revealing the salary of any given individual.
-This implementation works in following steps:
-1. Initialization on the blockchain.
-2. Receival of multiple secret salaries, using the real zk protocol.
-3. Once enough salaries have been received, the contract owner can start the ZK computation.
-4. The Zk computation sums all the given salaries together.
-5. Once the zk computation is complete, the contract will publicize the the summed variable.
-6. Once the summed variable is public, the contract will compute the average and store it in
-   the state, such that the value can be read by all.
+Gamemaster will decide on a number secret number to guess.
 
-**NOTE**: This contract is missing several features that a production ready contract should
-possess, including:
-- An allowlist over salarymen.
-- Check that each address only sends a single variable.
+Players can input guesses. Contract ends if the correct number is guessed,
+and the winner will be announced.
+
+If a guess is wrong, the failed input will be added to a public list of numbers.
+
+There is no limit on how many guesses a person can have.
+
+ZK: Secret value to guess.
+Public: All failed guesses.
