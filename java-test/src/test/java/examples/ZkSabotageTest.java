@@ -1,11 +1,10 @@
 package examples;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -92,14 +91,14 @@ public final class ZkSabotageTest extends JunitContractTest {
     blockchain.sendSecretInput(zkContract, account1, action, new byte[] {
         0x40 });
 
-    byte[] endGame = Sabotage.endGame(players);
+    byte[] endGame = Sabotage.endGame();
     blockchain.sendAction(account1, zkContract, endGame);
 
     Sabotage.ContractState state = Sabotage.ContractState
         .deserialize(blockchain.getContractState(zkContract));
 
-    System.out.println(state.result().get(0).sabotage());
-
+    assertThat(state.isActive()).isFalse();
+    assertThat(state.result().get(0).sabotage()).isTrue();
   }
 
   // @ContractTest(previous = "deployZkContract")
@@ -184,9 +183,9 @@ public final class ZkSabotageTest extends JunitContractTest {
 
   CompactBitArray createSecretActionInput(int playerIndex, boolean sabotage) {
     return BitOutput.serializeBits(output -> {
-      output.writeBoolean(false);
-      output.writeBoolean(sabotage);
       output.writeUnsignedInt(playerIndex, 6);
+      output.writeBoolean(sabotage);
+      output.writeBoolean(false);
     });
   }
 }

@@ -9,13 +9,13 @@ extern crate pbc_lib;
 mod zk_compute;
 
 use bitvec::prelude::*;
+use create_type_spec_derive::CreateTypeSpec;
 use pbc_contract_common::address::Address;
 use pbc_contract_common::context::ContractContext;
 use pbc_contract_common::events::EventGroup;
 use pbc_contract_common::shortname::ShortnameZkComputation;
-use pbc_contract_common::zk::{ZkClosed, ZkState, ZkStateChange, ZkInputDef};
+use pbc_contract_common::zk::{ZkClosed, ZkInputDef, ZkState, ZkStateChange};
 use pbc_zk::SecretVarId;
-use create_type_spec_derive::CreateTypeSpec;
 use read_write_rpc_derive::ReadWriteRPC;
 use read_write_state_derive::ReadWriteState;
 
@@ -95,17 +95,19 @@ fn send_action(
     zk_state: ZkState<SecretVarType>,
 ) -> (ContractState, Vec<EventGroup>, ZkInputDef<SecretVarType>) {
     assert!(state.is_active, "Game isn't active");
-    assert!(state.players.contains(&context.sender), "Only active players can send actions");
+    assert!(
+        state.players.contains(&context.sender),
+        "Only active players can send actions"
+    );
 
     let input_def = ZkInputDef {
         seal: false,
-        metadata: SecretVarType::SecretAction { },
+        metadata: SecretVarType::SecretAction {},
         expected_bit_lengths: vec![8],
     };
 
     (state, vec![], input_def)
 }
-
 
 #[zk_on_compute_complete]
 fn open_game_result(
@@ -152,11 +154,16 @@ fn game_result_available(
 }
 
 fn read_game_result(result: &ZkClosed<SecretVarType>) -> Vec<PlayerOutcome> {
-    let mut player_outcomes: Vec<PlayerOutcome> = vec![];
+    let mut buffer = [0u8; 16];
+    buffer.copy_from_slice(result.data.as_ref().unwrap().as_slice());
 
-    let zk_result = BitVec::from_vec(result.data.as_ref().unwrap().to_vec());
-    let bits: bitvec::slice::Chunks<'_, u8, Msb0> = zk_result.chunks(2);
-    for (i, v) in bits.enumerate() {
+    let mut bits = buffer.view_bits::<Lsb0>().to_bitvec();
+    bits.reverse();
+
+    let chunks = bits.chunks(2);
+
+    let mut player_outcomes: Vec<PlayerOutcome> = vec![];
+    for (i, v) in chunks.enumerate() {
         let is_protected = v.get(0).unwrap() == true;
         let is_sabotaged = v.get(1).unwrap() == true;
         player_outcomes.push(PlayerOutcome {
