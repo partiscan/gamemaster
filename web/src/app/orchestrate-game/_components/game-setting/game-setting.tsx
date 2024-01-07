@@ -39,10 +39,10 @@ export const GameSetting: FC<Props> = ({ setting }) => {
           "use server";
           removeGame(setting.settingId);
         }}
-        className="absolute top-5 right-5"
+        className="absolute top-5 right-5 opacity-50"
       >
         <button>
-          <Trash2Icon size="20" />
+          <Trash2Icon size="16" />
         </button>
       </form>
     </Card>
