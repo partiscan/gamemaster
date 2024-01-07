@@ -36,12 +36,27 @@ struct PlayerOutcome {
     protect: bool,
 }
 
+#[derive(CreateTypeSpec, ReadWriteState, ReadWriteRPC, PartialEq)]
+pub enum GameStatus {
+    #[discriminant(0)]
+    NotStarted {},
+    #[discriminant(1)]
+    InProgress {},
+    #[discriminant(2)]
+    Finished {},
+}
+
+#[derive(ReadWriteState)]
+pub struct GameResult {
+    pub points: Vec<u32>,
+}
+
 #[state]
 struct ContractState {
     administrator: Address,
     players: Vec<Address>,
-    is_active: bool,
     result: Vec<PlayerOutcome>,
+    status: GameStatus,
 }
 
 #[init(zk = true)]
@@ -49,34 +64,48 @@ fn initialize(ctx: ContractContext, zk_state: ZkState<SecretVarType>) -> Contrac
     ContractState {
         administrator: ctx.sender,
         players: vec![],
-        is_active: false,
+        status: GameStatus::NotStarted {},
         result: vec![],
     }
 }
 
-#[action(shortname = 0x00, zk = true)]
+#[action(shortname = 0x50, zk = true)]
 fn start_game(
     context: ContractContext,
     mut state: ContractState,
     zk_state: ZkState<SecretVarType>,
     players: Vec<Address>,
 ) -> (ContractState, Vec<EventGroup>, Vec<ZkStateChange>) {
-    assert!(!state.is_active, "Game is already active");
+    assert!(
+        context.sender == state.administrator,
+        "Action only for administrator"
+    );
+    assert!(
+        state.status == GameStatus::NotStarted {},
+        "Game is already active"
+    );
     state.players = players;
-    state.is_active = true;
+    state.status = GameStatus::InProgress {};
 
     (state, vec![], vec![])
 }
 
-#[action(shortname = 0x01, zk = true)]
+#[action(shortname = 0x51, zk = true)]
 fn end_game(
     context: ContractContext,
     mut state: ContractState,
     zk_state: ZkState<SecretVarType>,
 ) -> (ContractState, Vec<EventGroup>, Vec<ZkStateChange>) {
-    assert!(state.is_active, "Game isn't active");
+    assert!(
+        context.sender == state.administrator,
+        "Action only for administrator"
+    );
+    assert!(
+        state.status == GameStatus::InProgress {},
+        "Game isn't active"
+    );
 
-    state.is_active = false;
+    state.status = GameStatus::Finished {};
 
     (
         state,
@@ -94,7 +123,10 @@ fn send_action(
     state: ContractState,
     zk_state: ZkState<SecretVarType>,
 ) -> (ContractState, Vec<EventGroup>, ZkInputDef<SecretVarType>) {
-    assert!(state.is_active, "Game isn't active");
+    assert!(
+        state.status == GameStatus::InProgress {},
+        "Game isn't active"
+    );
     assert!(
         state.players.contains(&context.sender),
         "Only active players can send actions"

@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions;
 
 import com.partisiablockchain.BlockchainAddress;
 import com.partisiablockchain.language.abicodegen.Sabotage;
+import com.partisiablockchain.language.abicodegen.Sabotage.GameStatusD;
 import com.partisiablockchain.language.junit.ContractBytes;
 import com.partisiablockchain.language.junit.ContractTest;
 import com.partisiablockchain.language.junit.JunitContractTest;
@@ -97,89 +98,9 @@ public final class ZkSabotageTest extends JunitContractTest {
     Sabotage.ContractState state = Sabotage.ContractState
         .deserialize(blockchain.getContractState(zkContract));
 
-    assertThat(state.isActive()).isFalse();
+    assertThat(state.status().discriminant()).isEqualTo(GameStatusD.FINISHED);
     assertThat(state.result().get(0).sabotage()).isTrue();
   }
-
-  // @ContractTest(previous = "deployZkContract")
-  // public void canOnlyInputSecretNumberOnce() {
-  // blockchain.sendSecretInput(
-  // zkContract, account1, createSecretNumberInput(0), new byte[] { 0x40 });
-
-  // Assertions.assertThatThrownBy(
-  // () -> blockchain.sendSecretInput(
-  // zkContract, account1, createSecretNumberInput(0), new byte[] {
-  // 0x40 }))
-  // .isInstanceOf(SecretInputFailureException.class)
-  // .hasMessageContaining("Game is already active");
-  // }
-
-  // @ContractTest(previous = "deployZkContract")
-  // public void wrongGuessIsAddedTowrongGuesses() {
-  // blockchain.sendSecretInput(
-  // zkContract, account1, createSecretNumberInput(0), new byte[] { 0x40 });
-
-  // byte[] guess = GuessTheNumber.guess((byte) 100);
-  // blockchain.sendAction(account1, zkContract, guess);
-
-  // GuessTheNumber.ContractState state = GuessTheNumber.ContractState
-  // .deserialize(blockchain.getContractState(zkContract));
-
-  // assertThat(state.wrongGuesses().length).isEqualTo(1);
-  // assertThat(state.wrongGuesses()[0]).isEqualTo((byte) 100);
-  // }
-
-  // @ContractTest(previous = "deployZkContract")
-  // public void canGuessWhenGameIsActive() {
-  // blockchain.sendSecretInput(
-  // zkContract, account1, createSecretNumberInput(0), new byte[] { 0x40 });
-
-  // byte[] guess = GuessTheNumber.guess((byte) 0b000_0000);
-  // blockchain.sendAction(account1, zkContract, guess);
-
-  // GuessTheNumber.ContractState state = GuessTheNumber.ContractState
-  // .deserialize(blockchain.getContractState(zkContract));
-
-  // assertThat(state.wrongGuesses().length).isEqualTo(0);
-  // assertThat(state.winner()).isEqualTo(account1);
-  // }
-
-  // @ContractTest(previous = "deployZkContract")
-  // public void multipleGuesses() {
-  // blockchain.sendSecretInput(
-  // zkContract, account1, createSecretNumberInput(230), new byte[] { 0x40 });
-
-  // byte[] guess = GuessTheNumber.guess((byte) 102);
-  // blockchain.sendAction(account1, zkContract, guess);
-
-  // guess = GuessTheNumber.guess((byte) 105);
-  // blockchain.sendAction(account2, zkContract, guess);
-
-  // guess = GuessTheNumber.guess((byte) 105);
-  // blockchain.sendAction(account2, zkContract, guess);
-
-  // guess = GuessTheNumber.guess((byte) 200);
-  // blockchain.sendAction(account3, zkContract, guess);
-
-  // guess = GuessTheNumber.guess((byte) 1);
-  // blockchain.sendAction(account2, zkContract, guess);
-
-  // guess = GuessTheNumber.guess((byte) 230);
-  // blockchain.sendAction(account4, zkContract, guess);
-
-  // Assertions.assertThatThrownBy(
-  // () -> blockchain.sendAction(
-  // account1, zkContract, GuessTheNumber.guess((byte) 230)))
-  // .isInstanceOf(ActionFailureException.class)
-  // .hasMessageContaining("Game isn't active");
-
-  // GuessTheNumber.ContractState state = GuessTheNumber.ContractState
-  // .deserialize(blockchain.getContractState(zkContract));
-
-  // assertThat(state.wrongGuesses().length).isEqualTo(5);
-  // assertThat(state.winner()).isEqualTo(account4);
-  // assertThat(state.isActive()).isFalse();
-  // }
 
   CompactBitArray createSecretActionInput(int playerIndex, boolean sabotage) {
     return BitOutput.serializeBits(output -> {
