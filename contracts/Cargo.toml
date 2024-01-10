@@ -2,9 +2,7 @@
 resolver = "2"
 
 members = [
-    "zk-guess-the-number",
-    "zk-sabotage",
-    "coordinator",
+    "gamemaster",
 ]
 
 [workspace.package]
