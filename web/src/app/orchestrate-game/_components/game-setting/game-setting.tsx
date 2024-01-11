@@ -1,5 +1,6 @@
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -27,12 +28,14 @@ export const GameSetting: FC<Props> = ({ setting }) => {
         <CardDescription>{game.description}</CardDescription>
       </CardHeader>
 
-      {setting.gameType === "sabotage" && (
-        <SabotageGameSetting setting={setting} />
-      )}
-      {setting.gameType === "guess-the-number" && (
-        <GuessTheNumberGameSetting setting={setting} />
-      )}
+      <CardContent>
+        {setting.gameType === "sabotage" && (
+          <SabotageGameSetting setting={setting} />
+        )}
+        {setting.gameType === "guess-the-number" && (
+          <GuessTheNumberGameSetting setting={setting} />
+        )}
+      </CardContent>
 
       <form
         action={async () => {

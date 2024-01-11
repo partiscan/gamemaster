@@ -19,10 +19,8 @@ export const AddGameModal: FC = () => {
       <Dialog>
         <DialogTrigger asChild>
           <button>
-            <Card className="text-muted-foreground hover:bg-muted hover:text-primary relative w-full cursor-pointer">
-              <div className="m-8 text-xl font-semibold">
-                Add game
-              </div>
+            <Card className="text-muted-foreground hover:bg-muted hover:text-primary relative w-full cursor-pointer h-full flex items-center justify-center">
+              <div className="m-8 text-xl font-semibold">Add game</div>
             </Card>
           </button>
         </DialogTrigger>

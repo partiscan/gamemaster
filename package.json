@@ -1,5 +1,5 @@
 {
-	"dependencies": {
-		"nanoid": "^5.0.4"
+	"scripts": {
+		"generate-contracts": "cargo partisia-contract build --release --manifest-path ./contracts/Cargo.toml"
 	}
 }

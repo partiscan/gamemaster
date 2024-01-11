@@ -5,6 +5,16 @@ import { nanoid } from "nanoid";
 import { getStorage, setStorage } from "./storage";
 import { GameSetting } from "./types";
 
+const DEFAULTS = {
+  GUESS_THE_NUMBER: {
+    WIN_POINTS: 100,
+  },
+  SABOTAGE: {
+    SABOTAGE_POINTS: 50,
+    PROTECTED_COST_POINTS: 10,
+  },
+};
+
 const makeSetting = (game: Game): GameSetting => {
   const settingId = nanoid();
 
@@ -12,7 +22,7 @@ const makeSetting = (game: Game): GameSetting => {
     return {
       settingId,
       gameType: game.id,
-      winPoints: 0,
+      winPoints: DEFAULTS.GUESS_THE_NUMBER.WIN_POINTS,
     };
   }
 
@@ -20,8 +30,8 @@ const makeSetting = (game: Game): GameSetting => {
     return {
       settingId,
       gameType: game.id,
-      sabotagePoints: 0,
-      protectCostPoints: 0,
+      sabotagePoints: DEFAULTS.SABOTAGE.SABOTAGE_POINTS,
+      protectCostPoints: DEFAULTS.SABOTAGE.PROTECTED_COST_POINTS,
     };
   }
 
