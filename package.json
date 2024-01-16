@@ -1,5 +1,10 @@
 {
 	"scripts": {
-		"generate-contracts": "cargo partisia-contract build --release --manifest-path ./contracts/Cargo.toml"
+		"gamemaster:build": "cargo partisia-contract build --release --manifest-path ./contracts/Cargo.toml",
+		"gamemaster:copy": "cp ./contracts/target/wasm32-unknown-unknown/release/gamemaster.{zkwa,abi} ./web/src/contracts_gen/gamemaster/",
+		"gamemaster:abi-client": "cargo partisia-contract abi codegen --ts ./contracts/target/wasm32-unknown-unknown/release/gamemaster.abi ./web/contracts_gen/clients/gamemaster.ts",
+		"gamemaster": "pnpm gamemaster:build && pnpm gamemaster:copy && pnpm gamemaster:abi-client",
+		"zk-client:generate": "cargo partisia-contract abi codegen --ts abis/zk-contract.abi ./web/src/contracts_gen/clients/zk.ts",
+		"generate": "pnpm gamemaster && pnpm zk-client:generate"
 	}
 }
