@@ -23,7 +23,7 @@ const MPC_DECIMALS_MULTIPLIER = 10 ** MPC_DECIMALS;
 
 export const deployGame = async (): Promise<string> => {
   const gameMasterInit = getGameMasterInit();
-  const binderId = 3;
+  const binderId = 5;
 
   const deployment = deployContractV3(
     gamemasterContract,
