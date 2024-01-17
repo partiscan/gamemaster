@@ -40,8 +40,8 @@ dependencies = [
 
 [[package]]
 name = "create_type_spec_derive"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "derive_commons",
  "proc-macro2",
@@ -62,8 +62,8 @@ dependencies = [
 
 [[package]]
 name = "derive_commons"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -136,8 +136,8 @@ checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
 name = "pbc_contract_codegen"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "create_type_spec_derive",
  "pbc_contract_codegen_internal",
@@ -151,8 +151,8 @@ dependencies = [
 
 [[package]]
 name = "pbc_contract_codegen_internal"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "create_type_spec_derive",
  "pbc_contract_common",
@@ -165,13 +165,14 @@ dependencies = [
 
 [[package]]
 name = "pbc_contract_common"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "create_type_spec_derive",
  "pbc_contract_core",
  "pbc_lib",
  "pbc_traits",
+ "pbc_zk_core",
  "quote",
  "read_write_rpc_derive",
  "read_write_state_derive",
@@ -179,8 +180,8 @@ dependencies = [
 
 [[package]]
 name = "pbc_contract_core"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "pbc_traits",
  "pbc_zk_core",
@@ -191,18 +192,22 @@ dependencies = [
 
 [[package]]
 name = "pbc_lib"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
+dependencies = [
+ "once_cell",
+ "pbc_traits",
+]
 
 [[package]]
 name = "pbc_traits"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 
 [[package]]
 name = "pbc_zk"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "once_cell",
  "pbc_contract_common",
@@ -213,16 +218,16 @@ dependencies = [
 
 [[package]]
 name = "pbc_zk_core"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "pbc_traits",
 ]
 
 [[package]]
 name = "pbc_zk_macros"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "derive_commons",
  "pbc_contract_codegen_internal",
@@ -257,8 +262,8 @@ checksum = "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09"
 
 [[package]]
 name = "read_write_rpc_derive"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "derive_commons",
  "proc-macro2",
@@ -268,8 +273,8 @@ dependencies = [
 
 [[package]]
 name = "read_write_state_derive"
-version = "16.18.0"
-source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.18.0#547c60c882fbe25ac101f79de5c3cee89bd60bc3"
+version = "16.40.0"
+source = "git+https://git@gitlab.com/partisiablockchain/language/contract-sdk.git?tag=v.16.40.0#6058c61701d9ae694b47bc5c2ad89fd064e63733"
 dependencies = [
  "derive_commons",
  "proc-macro2",
@@ -319,9 +324,9 @@ checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
 
 [[package]]
 name = "uuid"
-version = "0.8.2"
+version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc5cf98d8186244414c848017f0e2676b3fcb46807f6668a97dfe67359a3c4b7"
+checksum = "5e395fcf16a7a3d8127ec99782007af141946b4795001f876d54fb0d55978560"
 dependencies = [
  "getrandom",
 ]

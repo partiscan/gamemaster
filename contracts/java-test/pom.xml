@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.partisiablockchain.language</groupId>
-  <artifactId>example-contracts-java-test</artifactId>
-  <version>4.18.0</version>
+  <groupId>io.partiscan</groupId>
+  <artifactId>gamemaster.contracts-java-test</artifactId>
+  <version>1.0.0</version>
 
   <licenses>
     <license>
@@ -32,7 +32,7 @@
   <parent>
     <groupId>com.partisiablockchain</groupId>
     <artifactId>pom</artifactId>
-    <version>4.41.0</version>
+    <version>4.46.0</version>
   </parent>
 
   <properties>
@@ -46,6 +46,7 @@
     <governance.ROUTING>com.partisiablockchain.governance:routing</governance.ROUTING>
     <governance.CONSENSUS>com.partisiablockchain.consensus.fasttrack:plugin</governance.CONSENSUS>
     <governance.ACCOUNT_PLUGIN>com.partisiablockchain.governance:fee</governance.ACCOUNT_PLUGIN>
+    <governance.SHARED_OBJECT_STORE>com.partisiablockchain.governance:shared-object-store</governance.SHARED_OBJECT_STORE>
     <integrationtest.version>4.22.0</integrationtest.version>
   </properties>
 
@@ -53,84 +54,78 @@
     <dependency>
       <groupId>com.partisiablockchain.language</groupId>
       <artifactId>abi-client</artifactId>
-      <version>4.51.0</version>
+      <version>4.80.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.partisiablockchain.language</groupId>
+      <artifactId>abi-codegen</artifactId>
+      <version>4.80.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.governance</groupId>
       <artifactId>sys-binder</artifactId>
-      <version>4.37.0</version>
+      <version>4.44.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.governance</groupId>
       <artifactId>fee</artifactId>
-      <version>4.45.0</version>
+      <version>4.60.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.governance</groupId>
       <artifactId>pubdeploy</artifactId>
-      <version>4.65.0</version>
+      <version>4.96.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.governance</groupId>
       <artifactId>routing</artifactId>
-      <version>4.42.0</version>
+      <version>4.55.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.language</groupId>
       <artifactId>pub-wasm-binder</artifactId>
-      <version>4.47.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.partisiablockchain.language</groupId>
-      <artifactId>real-wasm-binder</artifactId>
-      <version>4.51.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.partisiablockchain.real</groupId>
-      <artifactId>deploy</artifactId>
       <version>4.62.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.language</groupId>
+      <artifactId>real-wasm-binder</artifactId>
+      <version>4.71.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.partisiablockchain.real</groupId>
+      <artifactId>deploy</artifactId>
+      <version>4.93.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.partisiablockchain.language</groupId>
       <artifactId>junit-contract-test</artifactId>
-      <version>4.147.0</version>
+      <version>4.207.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.partisiablockchain.consensus.fasttrack</groupId>
       <artifactId>plugin</artifactId>
-      <version>4.41.0</version>
+      <version>4.55.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.partisiablockchain.governance</groupId>
+      <artifactId>shared-object-store</artifactId>
+      <version>4.18.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.10.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.10.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-launcher</artifactId>
-      <version>1.10.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -158,7 +153,7 @@
       <plugin>
         <groupId>com.partisiablockchain.language</groupId>
         <artifactId>abi-generation-maven-plugin</artifactId>
-        <version>4.51.0</version>
+        <version>4.80.0</version>
         <executions>
           <execution>
             <phase>generate-test-sources</phase>

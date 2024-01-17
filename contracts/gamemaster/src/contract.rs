@@ -22,7 +22,7 @@ use pbc_contract_common::events::EventGroup;
 use pbc_contract_common::shortname::ShortnameZkComputation;
 use pbc_contract_common::zk::ZkState;
 use pbc_contract_common::zk::{ZkClosed, ZkInputDef, ZkStateChange};
-use pbc_zk::SecretVarId;
+use pbc_zk::{Sbi8, SecretVarId};
 use read_write_rpc_derive::ReadWriteRPC;
 
 #[derive(CreateTypeSpec, ReadWriteRPC)]
@@ -234,7 +234,11 @@ fn on_secret_input(
     context: ContractContext,
     mut state: ContractState,
     zk_state: ZkState<SecretVarType>,
-) -> (ContractState, Vec<EventGroup>, ZkInputDef<SecretVarType>) {
+) -> (
+    ContractState,
+    Vec<EventGroup>,
+    ZkInputDef<SecretVarType, Sbi8>,
+) {
     let game = state
         .games
         .get_mut(state.current_game.index as usize)
@@ -247,11 +251,7 @@ fn on_secret_input(
                 "Only the administrator can input secret number"
             );
 
-            let input_def = ZkInputDef {
-                seal: false,
-                metadata: SecretVarType::SecretNumber {},
-                expected_bit_lengths: vec![8],
-            };
+            let input_def = ZkInputDef::with_metadata(SecretVarType::SecretNumber {});
             state.current_game.status = GameStatus::InProgress {};
             (state, vec![], input_def)
         }
@@ -265,12 +265,7 @@ fn on_secret_input(
                 "Only active players can send actions"
             );
 
-            let input_def = ZkInputDef {
-                seal: false,
-                metadata: SecretVarType::SecretAction {},
-                expected_bit_lengths: vec![8],
-            };
-
+            let input_def = ZkInputDef::with_metadata(SecretVarType::SecretAction {});
             (state, vec![], input_def)
         }
     }
@@ -305,7 +300,7 @@ fn on_variables_opened(
                     pad,
                 } = variable.metadata
                 {
-                    let correct = read_variable_boolean(variable);
+                    let correct = read_variable_boolean(&variable);
                     if correct {
                         *winner = Some(address);
                         state.current_game.status = GameStatus::Finished {};
@@ -325,7 +320,7 @@ fn on_variables_opened(
             for variable_id in opened_variables {
                 let variable = zk_state.get_variable(variable_id).unwrap();
                 if let SecretVarType::GameResult {} = variable.metadata {
-                    *result = read_sabotage_game_result(variable);
+                    *result = read_sabotage_game_result(&variable);
                 }
             }
 
