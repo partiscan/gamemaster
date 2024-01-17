@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.assertj.core.api.Assertions;
 
-import com.partisiablockchain.BlockchainAddress;
 import com.partisiablockchain.language.abicodegen.Gamemaster;
 import com.partisiablockchain.language.abicodegen.Gamemaster.CurrentGame;
 import com.partisiablockchain.language.abicodegen.Gamemaster.Game;
@@ -12,8 +11,6 @@ import com.partisiablockchain.language.abicodegen.Gamemaster.GameSettings;
 import com.partisiablockchain.language.abicodegen.Gamemaster.GameStatus;
 import com.partisiablockchain.language.junit.ContractTest;
 import com.partisiablockchain.language.junit.exceptions.SecretInputFailureException;
-import com.secata.stream.BitOutput;
-import com.secata.stream.CompactBitArray;
 
 import examples.GamemasterJunitContractTest;
 
@@ -34,7 +31,7 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
     nextGame();
 
     Assertions.assertThatThrownBy(
-        () -> sendSecretAction(account4, 0, true))
+        () -> sendSabotageAction(account4, 0, true))
         .isInstanceOf(SecretInputFailureException.class)
         .hasMessageContaining("Only active players can send actions");
   }
@@ -42,7 +39,7 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
   @ContractTest(previous = "deployZkContract")
   public void cannotSendActionIfGameIsntStarted() {
     Assertions.assertThatThrownBy(
-        () -> sendSecretAction(account1, 0, true))
+        () -> sendSabotageAction(account1, 0, true))
         .isInstanceOf(SecretInputFailureException.class)
         .hasMessageContaining("Game isn't active");
   }
@@ -51,7 +48,7 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
   public void gameWithOnlySabotages() {
     nextGame();
 
-    sendSecretAction(account1, 0, true);
+    sendSabotageAction(account1, 0, true);
 
     endGame();
 
@@ -68,7 +65,7 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
   public void gameWithOnlyProtect() {
     nextGame();
 
-    sendSecretAction(account1, 0, false);
+    sendSabotageAction(account1, 0, false);
 
     endGame();
 
@@ -82,18 +79,4 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
     assertThat(game.result().get(0).protect()).isTrue();
   }
 
-  void sendSecretAction(BlockchainAddress address, int playerIndex, boolean sabotage) {
-    CompactBitArray action = createSecretActionInput(playerIndex, sabotage);
-
-    blockchain.sendSecretInput(contract, address, action, new byte[] {
-        0x40 });
-  }
-
-  CompactBitArray createSecretActionInput(int playerIndex, boolean sabotage) {
-    return BitOutput.serializeBits(output -> {
-      output.writeUnsignedInt(playerIndex, 6);
-      output.writeBoolean(sabotage);
-      output.writeBoolean(false);
-    });
-  }
 }

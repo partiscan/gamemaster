@@ -10,20 +10,21 @@ use crate::__PBC_IS_ZK_CONTRACT;
 pub enum SecretVarType {
     /// Guess The Number
     #[discriminant(0)]
-    SecretNumber {},
+    GuessTheNumberSecretNumber {},
 
     #[discriminant(1)]
-    Guess {
+    GuessTheNumberGuess {
         guess: u8,
         address: Address,
         pad: u8,
     },
 
+    /// Sabotage
     #[discriminant(2)]
-    SecretAction {},
+    SabotageSecretAction {},
 
     #[discriminant(3)]
-    GameResult {},
+    SabotageGameResult {},
 }
 
 #[repr(C)]

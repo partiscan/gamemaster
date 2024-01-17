@@ -12,6 +12,8 @@ import com.partisiablockchain.language.abicodegen.Gamemaster;
 import com.partisiablockchain.language.abicodegen.Gamemaster.GameSettings;
 import com.partisiablockchain.language.junit.ContractBytes;
 import com.partisiablockchain.language.junit.JunitContractTest;
+import com.secata.stream.BitOutput;
+import com.secata.stream.CompactBitArray;
 
 abstract public class GamemasterJunitContractTest extends JunitContractTest {
     private static final ContractBytes CONTRACT_BYTES = ContractBytes.fromPaths(
@@ -79,5 +81,34 @@ abstract public class GamemasterJunitContractTest extends JunitContractTest {
         contract = blockchain.deployZkContract(account1, CONTRACT_BYTES, initialize);
 
         signUp(account1, account2, account3);
+    }
+
+    public void sendSabotageAction(BlockchainAddress address, int playerIndex, boolean sabotage) {
+        CompactBitArray action = createSecretActionInput(playerIndex, sabotage);
+
+        blockchain.sendSecretInput(contract, address, action, new byte[] {
+                0x40 });
+
+    }
+
+    CompactBitArray createSecretActionInput(int playerIndex, boolean sabotage) {
+        return BitOutput.serializeBits(output -> {
+            output.writeUnsignedInt(playerIndex, 6);
+            output.writeBoolean(sabotage);
+            output.writeBoolean(false);
+        });
+    }
+
+    public void sendSecretNumberAction(BlockchainAddress address, int secret) {
+        blockchain.sendSecretInput(contract, address, createSecretNumberInput(secret), new byte[] {
+                0x40 });
+    }
+
+    CompactBitArray createSecretNumberInput(int secret) {
+        return BitOutput.serializeBits(output -> output.writeUnsignedInt(secret, 8));
+    }
+
+    public void guess(BlockchainAddress address, int guess) {
+        blockchain.sendAction(address, contract, Gamemaster.guess((byte) guess));
     }
 }

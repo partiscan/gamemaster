@@ -117,15 +117,15 @@ fn next_game(
 
     state.current_game.index += 1;
 
-    assert!(
-        state.games[state.current_game.index as usize].can_game_start(),
-        "Game is not ready to start"
-    );
-
     state.current_game.status = if state.current_game.index >= state.games.len() as u32 {
         GameStatus::Finished {}
     } else {
-        GameStatus::InProgress {}
+        let game = &state.games[state.current_game.index as usize];
+        if game.can_game_start() {
+            GameStatus::InProgress {}
+        } else {
+            GameStatus::NotStarted {}
+        }
     };
 
     (state, vec![])
@@ -151,7 +151,7 @@ fn end_game(
     if let Game::Sabotage { .. } = &mut state.games[state.current_game.index as usize] {
         zk_events.push(ZkStateChange::start_computation(
             ShortnameZkComputation::from_u32(0x61),
-            vec![SecretVarType::GameResult {}],
+            vec![SecretVarType::SabotageGameResult {}],
         ));
     }
 
@@ -184,7 +184,7 @@ fn guess(
             vec![],
             vec![zk_compute::guess_start(
                 guess as u16,
-                &SecretVarType::Guess {
+                &SecretVarType::GuessTheNumberGuess {
                     address: context.sender,
                     guess,
                     pad: 0,
@@ -206,7 +206,7 @@ fn on_compute_complete(
     let mut variables_to_open = vec![];
     for variable_id in output_variables {
         let variable = zk_state.get_variable(variable_id).unwrap();
-        if let SecretVarType::Guess {
+        if let SecretVarType::GuessTheNumberGuess {
             address,
             guess,
             pad,
@@ -215,7 +215,7 @@ fn on_compute_complete(
             variables_to_open.push(variable_id);
         }
 
-        if let SecretVarType::GameResult {} = variable.metadata {
+        if let SecretVarType::SabotageGameResult {} = variable.metadata {
             variables_to_open.push(variable_id);
         }
     }
@@ -245,13 +245,16 @@ fn on_secret_input(
         .unwrap();
     match game {
         Game::GuessTheNumber { .. } => {
-            assert!(!is_game_started(&state), "Game is already active");
+            assert!(
+                state.current_game.status == GameStatus::NotStarted {},
+                "Game is already active"
+            );
             assert!(
                 state.administrator == context.sender,
                 "Only the administrator can input secret number"
             );
 
-            let input_def = ZkInputDef::with_metadata(SecretVarType::SecretNumber {});
+            let input_def = ZkInputDef::with_metadata(SecretVarType::GuessTheNumberSecretNumber {});
             state.current_game.status = GameStatus::InProgress {};
             (state, vec![], input_def)
         }
@@ -265,7 +268,7 @@ fn on_secret_input(
                 "Only active players can send actions"
             );
 
-            let input_def = ZkInputDef::with_metadata(SecretVarType::SecretAction {});
+            let input_def = ZkInputDef::with_metadata(SecretVarType::SabotageSecretAction {});
             (state, vec![], input_def)
         }
     }
@@ -294,7 +297,7 @@ fn on_variables_opened(
 
             for variable_id in opened_variables {
                 let variable = zk_state.get_variable(variable_id).unwrap();
-                if let SecretVarType::Guess {
+                if let SecretVarType::GuessTheNumberGuess {
                     address,
                     guess,
                     pad,
@@ -319,7 +322,7 @@ fn on_variables_opened(
         } => {
             for variable_id in opened_variables {
                 let variable = zk_state.get_variable(variable_id).unwrap();
-                if let SecretVarType::GameResult {} = variable.metadata {
+                if let SecretVarType::SabotageGameResult {} = variable.metadata {
                     *result = read_sabotage_game_result(&variable);
                 }
             }

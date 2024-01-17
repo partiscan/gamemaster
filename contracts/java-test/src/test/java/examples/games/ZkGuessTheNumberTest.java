@@ -13,8 +13,6 @@ import com.partisiablockchain.language.abicodegen.Gamemaster.GameStatus;
 import com.partisiablockchain.language.junit.ContractTest;
 import com.partisiablockchain.language.junit.exceptions.ActionFailureException;
 import com.partisiablockchain.language.junit.exceptions.SecretInputFailureException;
-import com.secata.stream.BitOutput;
-import com.secata.stream.CompactBitArray;
 
 import examples.GamemasterJunitContractTest;
 
@@ -32,7 +30,7 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
 
   @ContractTest(previous = "deployZkContract")
   public void onlyActivePlayersCanGuess() {
-    setSecretNumber(account1, 0);
+    sendSecretNumberAction(account1, 0);
 
     Assertions.assertThatThrownBy(
         () -> guess(account4, 0))
@@ -51,24 +49,24 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
   @ContractTest(previous = "deployZkContract")
   public void otherAccountsCannotInputSecretNumber() {
     Assertions.assertThatThrownBy(
-        () -> setSecretNumber(account2, 0))
+        () -> sendSecretNumberAction(account2, 0))
         .isInstanceOf(SecretInputFailureException.class)
         .hasMessageContaining("Only the administrator can input secret number");
   }
 
   @ContractTest(previous = "deployZkContract")
   public void canOnlyInputSecretNumberOnce() {
-    setSecretNumber(account1, 0);
+    sendSecretNumberAction(account1, 0);
 
     Assertions.assertThatThrownBy(
-        () -> setSecretNumber(account1, 0))
+        () -> sendSecretNumberAction(account1, 0))
         .isInstanceOf(SecretInputFailureException.class)
         .hasMessageContaining("Game is already active");
   }
 
   @ContractTest(previous = "deployZkContract")
   public void wrongGuessIsAddedTowrongGuesses() {
-    setSecretNumber(account1, 0);
+    sendSecretNumberAction(account1, 0);
 
     guess(account1, 100);
 
@@ -80,7 +78,7 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
 
   @ContractTest(previous = "deployZkContract")
   public void canGuessWhenGameIsActive() {
-    setSecretNumber(account1, 0);
+    sendSecretNumberAction(account1, 0);
 
     guess(account1, 0);
 
@@ -94,7 +92,7 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
   public void multipleGuesses() {
     signUp(account4);
 
-    setSecretNumber(account1, 230);
+    sendSecretNumberAction(account1, 230);
 
     guess(account1, 102);
     guess(account2, 105);
@@ -114,18 +112,5 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
 
     Gamemaster.ContractState state = getState();
     assertThat(state.currentGame()).isEqualTo(new CurrentGame(0, new GameStatus.Finished()));
-  }
-
-  void guess(BlockchainAddress address, int guess) {
-    blockchain.sendAction(address, contract, Gamemaster.guess((byte) guess));
-  }
-
-  void setSecretNumber(BlockchainAddress address, int secret) {
-    blockchain.sendSecretInput(contract, address, createSecretNumberInput(secret), new byte[] {
-        0x40 });
-  }
-
-  CompactBitArray createSecretNumberInput(int secret) {
-    return BitOutput.serializeBits(output -> output.writeUnsignedInt(secret, 8));
   }
 }
