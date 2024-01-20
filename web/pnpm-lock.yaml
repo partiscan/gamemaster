@@ -11,6 +11,9 @@ dependencies:
   '@partisiablockchain/abi-client':
     specifier: ^3.30.0
     version: 3.30.0
+  '@partisiablockchain/zk-client':
+    specifier: ^4.3.0
+    version: 4.3.0
   '@radix-ui/react-dialog':
     specifier: ^1.0.5
     version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
@@ -23,6 +26,9 @@ dependencies:
   '@radix-ui/react-label':
     specifier: ^2.0.2
     version: 2.0.2(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
+  '@radix-ui/react-slider':
+    specifier: ^1.1.2
+    version: 1.1.2(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.45)(react@18.2.0)
@@ -1809,11 +1815,28 @@ packages:
       prettier: 2.8.8
     dev: false
 
+  /@partisiablockchain/zk-client@4.3.0:
+    resolution: {integrity: sha512-GogKoYis4elHsuRhZIluNc10d+j1hFcajGoI0J8u899N33Iy1juK3uy1UwF9sQyxXRHzzwZmEez8XW/mSKrSOQ==}
+    dependencies:
+      '@secata-public/bitmanipulation-ts': 3.0.5
+      '@types/bn.js': 5.1.5
+      '@types/elliptic': 6.4.18
+      bn.js: 5.2.1
+      elliptic: 6.5.4
+      hash.js: 1.1.7
+    dev: false
+
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
     requiresBuild: true
     optional: true
+
+  /@radix-ui/number@1.0.1:
+    resolution: {integrity: sha512-T5gIdVO2mmPW3NNhjNgEP3cqMXjXL9UbO0BzWcXfvdBs+BohbQxvd/K5hSVKmn9/lbTdsQVKbUcP5WLCwvUbBg==}
+    dependencies:
+      '@babel/runtime': 7.23.6
+    dev: false
 
   /@radix-ui/primitive@1.0.1:
     resolution: {integrity: sha512-yQ8oGX2GVsEYMWGxcovu1uGWPCxV5BFfeeYxqPmuAzUyLT9qmaMXSAhXpb0WrspIeqYzdJpkh2vHModJPgRIaw==}
@@ -2236,6 +2259,37 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@radix-ui/react-slider@1.1.2(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-NKs15MJylfzVsCagVSWKhGGLNR1W9qWs+HtgbmjjVUB3B9+lb3PYoXxVju3kOrpf0VKyVCtZp+iTwVoqpa1Chw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.23.6
+      '@radix-ui/number': 1.0.1
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-collection': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@radix-ui/react-direction': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@radix-ui/react-use-previous': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@radix-ui/react-use-size': 1.0.1(@types/react@18.2.45)(react@18.2.0)
+      '@types/react': 18.2.45
+      '@types/react-dom': 18.2.18
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@radix-ui/react-slot@1.0.2(@types/react@18.2.45)(react@18.2.0):
     resolution: {integrity: sha512-YeTpuq4deV+6DusvVUW4ivBgnkHwECUu0BiN43L5UCDFgdhsRUWAghhTF5MbvNTPzmiFOx90asDSUjWuCNapwg==}
     peerDependencies:
@@ -2297,6 +2351,20 @@ packages:
 
   /@radix-ui/react-use-layout-effect@1.0.1(@types/react@18.2.45)(react@18.2.0):
     resolution: {integrity: sha512-v/5RegiJWYdoCvMnITBkNNx6bCj20fiaJnWtRkU18yITptraXjffz5Qbn05uOiQnOvi+dbkznkoaMltz1GnszQ==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.23.6
+      '@types/react': 18.2.45
+      react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-use-previous@1.0.1(@types/react@18.2.45)(react@18.2.0):
+    resolution: {integrity: sha512-cV5La9DPwiQ7S0gf/0qiD6YgNqM5Fk97Kdrlc5yBcrF3jyEZQwm7vYFqMo4IfeHgJXsRaMvLABFtd0OVEmZhDw==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.8 || ^17.0 || ^18.0
@@ -2445,6 +2513,14 @@ packages:
     dependencies:
       '@noble/hashes': 1.3.1
       '@scure/base': 1.1.5
+    dev: false
+
+  /@secata-public/bitmanipulation-ts@3.0.5:
+    resolution: {integrity: sha512-d4UBay73H7MLCoxMNTwu/4gour0iAXhH8GQg4T5oxsOVc2x5uVgWU3qdJqihraZYChTzfR7/gWsOcYM37Y+BKQ==}
+    dependencies:
+      '@types/bn.js': 5.1.5
+      bn.js: 5.2.1
+      prettier: 2.8.8
     dev: false
 
   /@secata-public/bitmanipulation-ts@3.0.6:
