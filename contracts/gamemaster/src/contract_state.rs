@@ -15,7 +15,7 @@ pub enum SecretVarType {
     #[discriminant(1)]
     GuessTheNumberGuess {
         guess: u8,
-        address: Address,
+        player: u32,
         pad: u8,
     },
 
@@ -40,14 +40,14 @@ pub enum Game {
     GuessTheNumber {
         winner_point: u32,
         wrong_guesses: Vec<u8>,
-        winner: Option<Address>,
+        winner: Option<u32>,
         ready_to_start: bool,
     },
     #[discriminant(1)]
     Sabotage {
         sabotage_point: u32,
         protect_point_cost: u32,
-        result: Vec<PlayerOutcome>,
+        result: Option<Vec<PlayerOutcome>>,
     },
 }
 
@@ -74,5 +74,5 @@ pub(crate) struct ContractState {
     pub players: Vec<Address>,
     pub current_game: CurrentGame,
     pub games: Vec<Game>,
-    pub points: Vec<u32>,
+    pub points: Vec<Vec<u32>>,
 }

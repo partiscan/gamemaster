@@ -57,7 +57,7 @@ fn initialize(
             } => Game::Sabotage {
                 sabotage_point,
                 protect_point_cost,
-                result: vec![],
+                result: None,
             },
         })
         .collect();
@@ -173,8 +173,12 @@ fn guess(
         state.current_game.status == GameStatus::InProgress {},
         "Game isn't active"
     );
+    let player = state
+        .players
+        .iter()
+        .position(|&p| p == context.sender);
     assert!(
-        state.players.contains(&context.sender),
+        player.is_some(),
         "Only active players can send actions"
     );
 
@@ -185,7 +189,7 @@ fn guess(
             vec![zk_compute::guess_start(
                 guess as u16,
                 &SecretVarType::GuessTheNumberGuess {
-                    address: context.sender,
+                    player: player.unwrap() as u32,
                     guess,
                     pad: 0,
                 },
@@ -207,7 +211,7 @@ fn on_compute_complete(
     for variable_id in output_variables {
         let variable = zk_state.get_variable(variable_id).unwrap();
         if let SecretVarType::GuessTheNumberGuess {
-            address,
+            player,
             guess,
             pad,
         } = variable.metadata
@@ -229,7 +233,7 @@ fn on_compute_complete(
     )
 }
 
-#[zk_on_secret_input(shortname = 0x40)]
+#[zk_on_secret_input(shortname = 0x40, secret_type = "Sbi8")]
 fn on_secret_input(
     context: ContractContext,
     mut state: ContractState,
@@ -298,14 +302,14 @@ fn on_variables_opened(
             for variable_id in opened_variables {
                 let variable = zk_state.get_variable(variable_id).unwrap();
                 if let SecretVarType::GuessTheNumberGuess {
-                    address,
+                    player,
                     guess,
                     pad,
                 } = variable.metadata
                 {
                     let correct = read_variable_boolean(&variable);
                     if correct {
-                        *winner = Some(address);
+                        *winner = Some(player);
                         state.current_game.status = GameStatus::Finished {};
                     } else {
                         wrong_guesses.push(guess);
@@ -323,7 +327,7 @@ fn on_variables_opened(
             for variable_id in opened_variables {
                 let variable = zk_state.get_variable(variable_id).unwrap();
                 if let SecretVarType::SabotageGameResult {} = variable.metadata {
-                    *result = read_sabotage_game_result(&variable);
+                    *result = Some(read_sabotage_game_result(&variable));
                 }
             }
 

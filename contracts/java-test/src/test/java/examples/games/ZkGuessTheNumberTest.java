@@ -85,7 +85,7 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
     Game.GuessTheNumber game = assertCurrentGameType(Game.GuessTheNumber.class);
 
     assertThat(game.wrongGuesses().length).isEqualTo(0);
-    assertThat(game.winner()).isEqualTo(account1);
+    assertThat(game.winner()).isEqualTo(0);
   }
 
   @ContractTest(previous = "deployZkContract")
@@ -108,7 +108,7 @@ public final class ZkGuessTheNumberTest extends GamemasterJunitContractTest {
 
     Gamemaster.Game.GuessTheNumber game = assertCurrentGameType(Game.GuessTheNumber.class);
     assertThat(game.wrongGuesses().length).isEqualTo(5);
-    assertThat(game.winner()).isEqualTo(account4);
+    assertThat(game.winner()).isEqualTo(3);
 
     Gamemaster.ContractState state = getState();
     assertThat(state.currentGame()).isEqualTo(new CurrentGame(0, new GameStatus.Finished()));
