@@ -1,7 +1,7 @@
 export default function Games() {
   return (
     <>
-      <h1 className="font-bold text-2xl mb-6">Games</h1>
+      <h1 className='mb-6 text-2xl font-bold'>Games</h1>
     </>
   );
 }

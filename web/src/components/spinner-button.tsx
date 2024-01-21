@@ -4,11 +4,11 @@ import {
   startTransition,
   useCallback,
   useState,
-} from "react";
-import { Spinner } from "./spinner";
-import { Button } from "./ui/button";
+} from 'react';
+import { Spinner } from './spinner';
+import { Button } from './ui/button';
 
-type Props = Omit<ComponentProps<typeof Button>, "onClick"> & {
+type Props = Omit<ComponentProps<typeof Button>, 'onClick'> & {
   onClick?: () => Promise<boolean>;
 };
 

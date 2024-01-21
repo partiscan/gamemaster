@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { Game } from "@/config";
-import { nanoid } from "nanoid";
-import { getStorage, setStorage } from "./storage";
-import { GameSetting } from "./types";
+import { Game } from '@/config';
+import { nanoid } from 'nanoid';
+import { getStorage, setStorage } from './storage';
+import { GameSetting } from './types';
 
 const DEFAULTS = {
   GUESS_THE_NUMBER: {
@@ -18,7 +18,7 @@ const DEFAULTS = {
 const makeSetting = (game: Game): GameSetting => {
   const settingId = nanoid();
 
-  if (game.id === "guess-the-number") {
+  if (game.id === 'guess-the-number') {
     return {
       settingId,
       gameType: game.id,
@@ -26,7 +26,7 @@ const makeSetting = (game: Game): GameSetting => {
     };
   }
 
-  if (game.id === "sabotage") {
+  if (game.id === 'sabotage') {
     return {
       settingId,
       gameType: game.id,
@@ -35,7 +35,7 @@ const makeSetting = (game: Game): GameSetting => {
     };
   }
 
-  throw new Error("Invalid game type");
+  throw new Error('Invalid game type');
 };
 
 export const addGame = (game: Game) => {

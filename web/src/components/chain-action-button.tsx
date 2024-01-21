@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
 import {
   ComponentProps,
   PropsWithChildren,
   useCallback,
   useState,
-} from "react";
-import { ChainAction } from "@/server/chain-actions/types";
-import { fetchIdentity } from "@/server/user/cookie-auth";
-import { SpinnerButton } from "./spinner-button";
-import { getPartisiaSdk } from "@/lib/partisia";
+} from 'react';
+import { ChainAction } from '@/server/chain-actions/types';
+import { fetchIdentity } from '@/server/user/cookie-auth';
+import { SpinnerButton } from './spinner-button';
+import { getPartisiaSdk } from '@/lib/partisia';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
-import { ConnectWallet } from "./wallet/connect-wallet";
+} from './ui/dialog';
+import { ConnectWallet } from './wallet/connect-wallet';
 
 type Props = PropsWithChildren<
   ComponentProps<typeof SpinnerButton> & {
@@ -37,7 +37,7 @@ export const ChainActionButton = ({
 
   const onClick = useCallback(async () => {
     const resolvedAction =
-      typeof action === "function" ? await action() : action;
+      typeof action === 'function' ? await action() : action;
 
     const identity = await fetchIdentity();
     if (!identity) {
@@ -45,7 +45,7 @@ export const ChainActionButton = ({
       return false;
     }
 
-    if (identity.kind === "partisia") {
+    if (identity.kind === 'partisia') {
       const sdk = getPartisiaSdk(identity);
 
       await sdk.signMessage({
@@ -58,7 +58,7 @@ export const ChainActionButton = ({
       return true;
     }
 
-    throw new Error("");
+    throw new Error('');
   }, [action, onSuccess]);
 
   return (

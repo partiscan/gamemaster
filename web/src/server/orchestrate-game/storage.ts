@@ -1,8 +1,8 @@
-import { GAMES } from "@/config";
-import { cookies } from "next/headers";
-import { GameSetting } from "./types";
+import { GAMES } from '@/config';
+import { cookies } from 'next/headers';
+import { GameSetting } from './types';
 
-const COOKIE_NAME = "pending-game-setting";
+const COOKIE_NAME = 'pending-game-setting';
 
 export const setStorage = (settings: GameSetting[]) => {
   cookies().set(COOKIE_NAME, JSON.stringify(settings));
@@ -17,6 +17,6 @@ export const getStorage = (): GameSetting[] => {
   if (!Array.isArray(parsed)) return [];
 
   return parsed.filter((setting) =>
-    GAMES.some((game) => game.id === setting.gameType)
+    GAMES.some((game) => game.id === setting.gameType),
   );
 };

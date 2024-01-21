@@ -1,4 +1,4 @@
-import { GUESS_THE_NUMBER, SABOTAGE } from "@/config";
+import { GUESS_THE_NUMBER, SABOTAGE } from '@/config';
 
 type CommonGameSetting<T> = {
   settingId: string;

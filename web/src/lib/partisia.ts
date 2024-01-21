@@ -1,8 +1,8 @@
 'use client';
 
-import { PartisiaWallet } from "@/components/wallet/wallet-identity";
-import { fetchIdentity } from "@/server/user/cookie-auth";
-import PartisiaSdk from "partisia-sdk";
+import { PartisiaWallet } from '@/components/wallet/wallet-identity';
+import { fetchIdentity } from '@/server/user/cookie-auth';
+import PartisiaSdk from 'partisia-sdk';
 
 export const getPartisiaSdk = ({ wallet, seed }: PartisiaWallet) =>
   new PartisiaSdk({
@@ -21,7 +21,7 @@ export const signTransaction = async (contract: string, hexPayload: string) => {
   return await sdk.signMessage({
     contract,
     payload: hexPayload,
-    payloadType: "hex_payload",
+    payloadType: 'hex_payload',
     dontBroadcast: false,
   });
 };

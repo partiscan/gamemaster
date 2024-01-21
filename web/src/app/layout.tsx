@@ -1,17 +1,17 @@
-import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Header } from "@/components/header/header";
+import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { Header } from '@/components/header/header';
 
 export const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
 export const metadata: Metadata = {
-  title: "GameMaster",
-  description: "",
+  title: 'GameMaster',
+  description: '',
 };
 
 export default function RootLayout({
@@ -21,15 +21,15 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang='en'
       className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        inter.className
+        'min-h-screen bg-background font-sans antialiased',
+        inter.className,
       )}
     >
       <body>
         <Header />
-        <main className="p-4 xl:p-12 2xl:px-24">{children}</main>
+        <main className='p-4 xl:p-12 2xl:px-24'>{children}</main>
       </body>
     </html>
   );

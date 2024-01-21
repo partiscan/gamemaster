@@ -1,16 +1,14 @@
-"use server";
+'use server';
 
-import { getPendingGameSettings } from "./get-pending-game-settings";
-import { setStorage } from "./storage";
-import { GameSetting } from "./types";
+import { getPendingGameSettings } from './get-pending-game-settings';
+import { setStorage } from './storage';
+import { GameSetting } from './types';
 
-export const changeGameSetting = (
-  newSetting: GameSetting
-) => {
+export const changeGameSetting = (newSetting: GameSetting) => {
   const gameSettings = getPendingGameSettings();
 
   const index = gameSettings.findIndex(
-    (setting) => setting.settingId === newSetting.settingId
+    (setting) => setting.settingId === newSetting.settingId,
   );
 
   if (index === -1) return;

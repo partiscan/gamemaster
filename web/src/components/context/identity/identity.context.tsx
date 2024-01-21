@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { PropsWithChildren } from "react";
-import { WalletIdentity } from "../../wallet/wallet-identity";
+import React, { PropsWithChildren } from 'react';
+import { WalletIdentity } from '../../wallet/wallet-identity';
 
 type IdentityContextType = {
   identity: WalletIdentity | null;

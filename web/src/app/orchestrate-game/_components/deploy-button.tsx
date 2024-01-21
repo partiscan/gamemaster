@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { signTransaction } from "@/lib/partisia";
-import { deployGame } from "@/server/orchestrate-game/deploy-game";
+import { Button } from '@/components/ui/button';
+import { signTransaction } from '@/lib/partisia';
+import { deployGame } from '@/server/orchestrate-game/deploy-game';
 
-const ZK_CONTRACT = "018bc1ccbb672b87710327713c97d43204905082cb";
+const ZK_CONTRACT = '018bc1ccbb672b87710327713c97d43204905082cb';
 
 export const DeployButton = () => {
   return (

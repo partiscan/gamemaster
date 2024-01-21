@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { ChainActionButton } from "@/components/chain-action-button";
-import { useGameState } from "@/components/context/game-state.context";
-import { useGamemasterAbi } from "@/components/context/gamemaster.context";
-import { useIdentity } from "@/components/context/identity/identity.context";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { GuessTheNumberActions } from "@/lib/game-actions/guess-the-number-actions";
-import { useEffect, useState } from "react";
+import { ChainActionButton } from '@/components/chain-action-button';
+import { useGameState } from '@/components/context/game-state.context';
+import { useGamemasterAbi } from '@/components/context/gamemaster.context';
+import { useIdentity } from '@/components/context/identity/identity.context';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
+import { GuessTheNumberActions } from '@/lib/game-actions/guess-the-number-actions';
+import { useEffect, useState } from 'react';
 
 const MAX_NUMBER = 255;
 export const GuessTheNumberAdmin = () => {
@@ -28,23 +28,23 @@ export const GuessTheNumberAdmin = () => {
 
   return (
     <>
-      <div className="w-full items-center text-sm font-semibold my-5 space-y-5">
-        <Label htmlFor="secret-number">Secret number: {secretNumber}</Label>
+      <div className='my-5 w-full items-center space-y-5 text-sm font-semibold'>
+        <Label htmlFor='secret-number'>Secret number: {secretNumber}</Label>
 
         <Slider
-          id="secret-number"
+          id='secret-number'
           value={[secretNumber]}
           min={0}
           max={MAX_NUMBER}
           step={1}
-          className="max-w-sm mx-auto"
+          className='mx-auto max-w-sm'
           onValueChange={(value) => setSecretNumber(value[0])}
         />
         <ChainActionButton
           action={{
             contract: contractId,
-            payload: rpc.toString("hex"),
-            payloadType: "hex_payload",
+            payload: rpc.toString('hex'),
+            payloadType: 'hex_payload',
           }}
         >
           Set Secret Number

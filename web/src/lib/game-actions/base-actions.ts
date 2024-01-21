@@ -1,11 +1,11 @@
-import { FnRpcBuilder, ZkInputBuilder } from "@partisiablockchain/abi-client";
-import { BlockchainAddress, ZkRpcBuilder } from "@partisiablockchain/zk-client";
+import { FnRpcBuilder, ZkInputBuilder } from '@partisiablockchain/abi-client';
+import { BlockchainAddress, ZkRpcBuilder } from '@partisiablockchain/zk-client';
 
 export class BaseActions {
   constructor(
     public readonly address: string,
     public readonly abi: any,
-    public readonly engineKeys: any[]
+    public readonly engineKeys: any[],
   ) {}
 
   public inputZkSecret(method: string, secret: number): Buffer {
@@ -14,7 +14,7 @@ export class BaseActions {
 
     const secretInputBuilder = ZkInputBuilder.createZkInputBuilder(
       method,
-      this.abi
+      this.abi,
     );
     secretInputBuilder.addI8(secret);
     const compactBitArray = secretInputBuilder.getBits();
@@ -23,7 +23,7 @@ export class BaseActions {
       BlockchainAddress.fromString(this.address),
       compactBitArray,
       additionalRpc,
-      this.engineKeys
+      this.engineKeys,
     );
   }
 }

@@ -1,15 +1,15 @@
-import { ChainActionButton } from "@/components/chain-action-button";
-import { useGameState } from "@/components/context/game-state.context";
-import { signUp } from "@/contracts_gen/clients/gamemaster";
-import { GameHeadline } from "../typography/game-headline";
-import { GameSubheader } from "../typography/game-subheader";
+import { ChainActionButton } from '@/components/chain-action-button';
+import { useGameState } from '@/components/context/game-state.context';
+import { signUp } from '@/contracts_gen/clients/gamemaster';
+import { GameHeadline } from '../typography/game-headline';
+import { GameSubheader } from '../typography/game-subheader';
 
 export const PreGameScreen = () => {
-  const { isAdmin, isInGame, contractId} = useGameState();
+  const { isAdmin, isInGame, contractId } = useGameState();
 
   if (isAdmin) {
     return (
-      <div className="text-center">
+      <div className='text-center'>
         <GameHeadline>You are the administrator!</GameHeadline>
         <GameSubheader>Start the game when you are ready.</GameSubheader>
       </div>
@@ -18,14 +18,14 @@ export const PreGameScreen = () => {
 
   if (!isInGame) {
     return (
-      <div className="text-center">
+      <div className='text-center'>
         <ChainActionButton
           action={{
             contract: contractId,
-            payload: signUp().toString("hex"),
-            payloadType: "hex",
+            payload: signUp().toString('hex'),
+            payloadType: 'hex',
           }}
-          className="mt-4"
+          className='mt-4'
         >
           Sign up
         </ChainActionButton>
@@ -34,7 +34,7 @@ export const PreGameScreen = () => {
   }
 
   return (
-    <div className="text-center">
+    <div className='text-center'>
       <GameHeadline>You are signed up!</GameHeadline>
     </div>
   );

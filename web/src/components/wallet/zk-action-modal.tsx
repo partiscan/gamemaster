@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from "react";
-import { Card } from "../ui/card";
+import { FC, PropsWithChildren } from 'react';
+import { Card } from '../ui/card';
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { useGameState } from "../context/game-state.context";
+} from '../ui/dialog';
+import { useGameState } from '../context/game-state.context';
 
 type Props = PropsWithChildren<{
   payload: Buffer;

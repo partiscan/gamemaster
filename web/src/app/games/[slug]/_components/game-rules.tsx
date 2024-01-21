@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useGameState } from "@/components/context/game-state.context";
-import { GAMES } from "@/config";
-import Image from "next/image";
-import { GamePoints } from "./game-points";
-import { GameHeadline } from "./typography/game-headline";
-import { GameSubheader } from "./typography/game-subheader";
+import { useGameState } from '@/components/context/game-state.context';
+import { GAMES } from '@/config';
+import Image from 'next/image';
+import { GamePoints } from './game-points';
+import { GameHeadline } from './typography/game-headline';
+import { GameSubheader } from './typography/game-subheader';
 
 export const GameRules = () => {
   const {
@@ -17,19 +17,19 @@ export const GameRules = () => {
   if (!gameDetails) return null;
 
   return (
-    <div className="bg-slate-200 w-full  max-w-2xl mx-auto flex flex-col items-center md:items-start text-center md:flex-row md:text-left gap-0 md:gap-2">
+    <div className='mx-auto flex  w-full max-w-2xl flex-col items-center gap-0 bg-slate-200 text-center md:flex-row md:items-start md:gap-2 md:text-left'>
       <Image
-        className="rounded shrink grow-0"
+        className='shrink grow-0 rounded'
         src={`/assets/games/${game.kind}.webp`}
-        alt={""}
+        alt={''}
         width={128}
         height={128}
       />
-      <div className="p-2 grow">
+      <div className='grow p-2'>
         <GameHeadline>{gameDetails.title}</GameHeadline>
         <GameSubheader>{gameDetails.description}</GameSubheader>
       </div>
-      <div className="p-2 shrink-0">
+      <div className='shrink-0 p-2 md:pr-4'>
         <GameHeadline>Points</GameHeadline>
         <GameSubheader>
           <GamePoints game={game} />

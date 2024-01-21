@@ -1,3 +1,3 @@
-import { getStorage } from "./storage";
+import { getStorage } from './storage';
 
 export const getPendingGameSettings = () => getStorage();

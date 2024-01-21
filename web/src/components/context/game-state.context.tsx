@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { GameState, getGameState } from "@/server/game/get-game-state";
-import React, { PropsWithChildren, useEffect, useMemo } from "react";
-import { useIdentity } from "./identity/identity.context";
-import { BlockchainPublicKey } from "@partisiablockchain/zk-client";
+import { GameState, getGameState } from '@/server/game/get-game-state';
+import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import { useIdentity } from './identity/identity.context';
+import { BlockchainPublicKey } from '@partisiablockchain/zk-client';
 
 type GameStateContextType = {
   gameState: GameState;
@@ -35,14 +35,14 @@ export const GameStateProvider: React.FC<
   const engineKeys = useMemo(
     () =>
       gameState.engineKeys.map((key) =>
-        BlockchainPublicKey.fromBuffer(Buffer.from(key, "base64"))
+        BlockchainPublicKey.fromBuffer(Buffer.from(key, 'base64')),
       ),
-    [gameState]
+    [gameState],
   );
 
   const identity = useIdentity();
   const isAdmin = gameState?.administrator === identity?.address;
-  const isInGame = gameState?.players.includes(identity?.address ?? "");
+  const isInGame = gameState?.players.includes(identity?.address ?? '');
 
   return (
     <GameStateContext.Provider

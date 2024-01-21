@@ -1,16 +1,16 @@
 'use server';
 
-import { WalletIdentity } from "@/components/wallet/wallet-identity";
-import { defaults, seal, unseal } from "iron-webcrypto";
-import { cookies } from "next/headers";
+import { WalletIdentity } from '@/components/wallet/wallet-identity';
+import { defaults, seal, unseal } from 'iron-webcrypto';
+import { cookies } from 'next/headers';
 
-import "server-only";
+import 'server-only';
 
 const secret = process.env.COOKIE_SECRET!;
-const cookieName = "identity";
+const cookieName = 'identity';
 
 export const saveIdentity = async (
-  identity: WalletIdentity
+  identity: WalletIdentity,
 ): Promise<WalletIdentity> => {
   const cookieStore = cookies();
 

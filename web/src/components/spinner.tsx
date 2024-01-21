@@ -10,7 +10,7 @@ export const Spinner: FC<Props> = ({ className }) => {
         aria-hidden='true'
         className={clsx(
           className,
-          'h-8 w-8 animate-spin text-transparent fill-white',
+          'h-8 w-8 animate-spin fill-white text-transparent',
         )}
         viewBox='0 0 100 101'
         fill='none'
