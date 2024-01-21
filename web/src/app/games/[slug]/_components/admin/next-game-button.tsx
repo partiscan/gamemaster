@@ -1,6 +1,9 @@
+"use client";
+
+import { ChainActionButton } from "@/components/chain-action-button";
 import { useGameState } from "@/components/context/game-state.context";
-import { useGamemasterAbi } from "@/components/context/gamemaster.context";
 import { useIdentity } from "@/components/context/identity/identity.context";
+import { nextGame } from "@/contracts_gen/clients/gamemaster";
 import { FC } from "react";
 import { GuessTheNumberAdmin } from "./guess-the-number-admin";
 
@@ -10,9 +13,8 @@ export const NextGameButton: FC<Props> = ({}) => {
   const {
     gameState: { games, currentGame },
     isAdmin,
-    engineKeys,
+    contractId,
   } = useGameState();
-  const abi = useGamemasterAbi();
   const identity = useIdentity();
 
   if (!identity || !isAdmin || currentGame.status !== "not-started")
@@ -25,5 +27,15 @@ export const NextGameButton: FC<Props> = ({}) => {
     return <GuessTheNumberAdmin />;
   }
 
-  return null; // todo: normal start action
+  return (
+    <ChainActionButton
+      action={{
+        contract: contractId,
+        payload: nextGame().toString("hex"),
+        payloadType: "hex_payload",
+      }}
+    >
+      Start!
+    </ChainActionButton>
+  );
 };

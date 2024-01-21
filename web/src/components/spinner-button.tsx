@@ -5,7 +5,7 @@ import {
   useCallback,
   useState,
 } from "react";
-import { Spinner } from "./Spinner";
+import { Spinner } from "./spinner";
 import { Button } from "./ui/button";
 
 type Props = Omit<ComponentProps<typeof Button>, "onClick"> & {

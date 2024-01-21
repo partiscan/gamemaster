@@ -1,10 +1,23 @@
 "use client";
 
-import { ComponentProps, PropsWithChildren } from "react";
+import {
+  ComponentProps,
+  PropsWithChildren,
+  useCallback,
+  useState,
+} from "react";
 import { ChainAction } from "@/server/chain-actions/types";
 import { fetchIdentity } from "@/server/user/cookie-auth";
 import { SpinnerButton } from "./spinner-button";
 import { getPartisiaSdk } from "@/lib/partisia";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { ConnectWallet } from "./wallet/connect-wallet";
 
 type Props = PropsWithChildren<
   ComponentProps<typeof SpinnerButton> & {
@@ -20,25 +33,48 @@ export const ChainActionButton = ({
   onSuccess,
   ...rest
 }: Props) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const onClick = useCallback(async () => {
+    const resolvedAction =
+      typeof action === "function" ? await action() : action;
+
+    const identity = await fetchIdentity();
+    if (!identity) {
+      setShowModal(true);
+      return false;
+    }
+
+    if (identity.kind === "partisia") {
+      const sdk = getPartisiaSdk(identity);
+
+      await sdk.signMessage({
+        contract: resolvedAction.contract,
+        payload: resolvedAction.payload,
+        payloadType: resolvedAction.payloadType,
+        dontBroadcast: false,
+      });
+      onSuccess?.();
+      return true;
+    }
+
+    throw new Error("");
+  }, [action, onSuccess]);
+
   return (
-    <SpinnerButton
-      onClick={async () => {
-        const resolvedAction =
-          typeof action === "function" ? await action() : await action;
-
-        const identity = await fetchIdentity();
-        const sdk = getPartisiaSdk(identity!);
-
-        await sdk.signMessage({
-          contract: resolvedAction.contract,
-          payload: resolvedAction.payload,
-          payloadType: resolvedAction.payloadType,
-          dontBroadcast: false,
-        });
-        onSuccess?.();
-        return true;
-      }}
-      {...rest}
-    />
+    <>
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Sign transaction</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            You need to connect your wallet to sign this transaction.
+          </DialogDescription>
+          <ConnectWallet />
+        </DialogContent>
+      </Dialog>
+      <SpinnerButton onClick={onClick} {...rest} />
+    </>
   );
 };

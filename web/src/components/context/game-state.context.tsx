@@ -42,7 +42,7 @@ export const GameStateProvider: React.FC<
 
   const identity = useIdentity();
   const isAdmin = gameState?.administrator === identity?.address;
-  const isInGame = gameState?.players.includes(identity?.address ?? "") || true;
+  const isInGame = gameState?.players.includes(identity?.address ?? "");
 
   return (
     <GameStateContext.Provider

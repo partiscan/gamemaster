@@ -1,29 +1,30 @@
 "use client";
 
+import { ChainActionButton } from "@/components/chain-action-button";
 import { useGameState } from "@/components/context/game-state.context";
 import { useGamemasterAbi } from "@/components/context/gamemaster.context";
 import { useIdentity } from "@/components/context/identity/identity.context";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { ZkActionModal } from "@/components/wallet/zk-action-modal";
 import { GuessTheNumberActions } from "@/lib/game-actions/guess-the-number-actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MAX_NUMBER = 255;
 export const GuessTheNumberAdmin = () => {
-  const [secretNumber, setSecretNumber] = useState(
-    Math.floor(Math.random() * MAX_NUMBER)
-  );
+  const [secretNumber, setSecretNumber] = useState(0);
+
+  useEffect(() => {
+    setSecretNumber(Math.floor(Math.random() * MAX_NUMBER));
+  }, []);
 
   const abi = useGamemasterAbi();
   const identity = useIdentity();
-  const { engineKeys } = useGameState();
+  const { engineKeys, contractId } = useGameState();
 
   if (!identity) return null;
 
   const actions = new GuessTheNumberActions(identity.address, abi, engineKeys);
-  const rpc = actions.secretNumberInput( - (MAX_NUMBER - 1) / 2);
+  const rpc = actions.secretNumberInput(-(MAX_NUMBER - 1) / 2);
 
   return (
     <>
@@ -38,11 +39,16 @@ export const GuessTheNumberAdmin = () => {
           step={1}
           className="max-w-sm mx-auto"
           onValueChange={(value) => setSecretNumber(value[0])}
-          suppressHydrationWarning
         />
-        <ZkActionModal payload={rpc}>
-          <Button>Set Secret Number</Button>
-        </ZkActionModal>
+        <ChainActionButton
+          action={{
+            contract: contractId,
+            payload: rpc.toString("hex"),
+            payloadType: "hex_payload",
+          }}
+        >
+          Set Secret Number
+        </ChainActionButton>
       </div>
     </>
   );

@@ -27,7 +27,7 @@ export type GameState = {
 };
 
 export const getGameState = (id: string): GameState => {
-  if (id === "test") return getTestState();
+  if (id === "test" || id === "000000000000000000000000000000000000000000") return getTestState();
 
   return null as any;
 };
@@ -35,17 +35,17 @@ export const getGameState = (id: string): GameState => {
 const getTestState = (): GameState => ({
   administrator: "00527092bfb4b35a0331fe066199a41d45c213c368",
   currentGame: {
-    index: 1,
+    index: 0,
     status: "not-started",
   },
   players: [
     "00527092bfb4b35a0331fe066199a41d45c213c368",
     "00527092bfb4b35a0331fe066199a41d45c213c367",
     "00527092bfb4b35a0331fe066199a41d45c213c366",
-    "00527092bfb4b35a0331fe066199a41d45c213c366",
-    "00527092bfb4b35a0331fe066199a41d45c213c366",
-    "00527092bfb4b35a0331fe066199a41d45c213c366",
-    "00527092bfb4b35a0331fe066199a41d45c213c366",
+    "00527092bfb4b35a0331fe066199a41d45c213c365",
+    "00527092bfb4b35a0331fe066199a41d45c213c364",
+    "00527092bfb4b35a0331fe066199a41d45c213c363",
+    "00527092bfb4b35a0331fe066199a41d45c213c362",
   ],
   games: [
     {
