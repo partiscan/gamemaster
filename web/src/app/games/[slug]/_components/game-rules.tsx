@@ -17,7 +17,7 @@ export const GameRules = () => {
   if (!gameDetails) return null;
 
   return (
-    <div className='mx-auto flex  w-full max-w-2xl flex-col items-center gap-0 bg-slate-200 text-center md:flex-row md:items-start md:gap-2 md:text-left'>
+    <div className='mx-auto flex  w-full max-w-2xl flex-col items-center gap-0 bg-slate-200 text-center md:flex-row md:items-start md:gap-2 md:text-left mb-2'>
       <Image
         className='shrink grow-0 rounded'
         src={`/assets/games/${game.kind}.webp`}

@@ -6,6 +6,7 @@ import { useIdentity } from '@/components/context/identity/identity.context';
 import { nextGame } from '@/contracts_gen/clients/gamemaster';
 import { FC } from 'react';
 import { GuessTheNumberAdmin } from './guess-the-number-admin';
+import { AdminActionBox } from './admin-action-box';
 
 type Props = {};
 
@@ -28,14 +29,16 @@ export const NextGameButton: FC<Props> = ({}) => {
   }
 
   return (
-    <ChainActionButton
-      action={{
-        contract: contractId,
-        payload: nextGame().toString('hex'),
-        payloadType: 'hex_payload',
-      }}
-    >
-      Start!
-    </ChainActionButton>
+    <AdminActionBox>
+      <ChainActionButton
+        action={{
+          contract: contractId,
+          payload: nextGame().toString('hex'),
+          payloadType: 'hex_payload',
+        }}
+      >
+        Start Game!
+      </ChainActionButton>
+    </AdminActionBox>
   );
 };

@@ -13,7 +13,7 @@ export const GameStatus = () => {
   if (currentGame.status === 'not-started') {
     return (
       <div className='text-center text-xl font-semibold uppercase'>
-        Game starting soon
+        Starting soon
       </div>
     );
   }
@@ -29,7 +29,8 @@ export const GameStatus = () => {
   if (currentGame.status === 'finished') {
     return (
       <div className='text-center text-xl font-semibold uppercase'>
-        Game finished {!lastGame && ' - next game starting soon'}
+        Game finished
+        <div className='text-base text-muted-foreground'>{!lastGame && 'next game starting soon'}</div>
       </div>
     );
   }

@@ -1,15 +1,16 @@
 'use client';
 
+import { getPartisiaSdk } from '@/lib/partisia';
+import { ChainAction } from '@/server/chain-actions/types';
+import { fetchIdentity } from '@/server/user/cookie-auth';
 import {
   ComponentProps,
   PropsWithChildren,
   useCallback,
   useState,
 } from 'react';
-import { ChainAction } from '@/server/chain-actions/types';
-import { fetchIdentity } from '@/server/user/cookie-auth';
 import { SpinnerButton } from './spinner-button';
-import { getPartisiaSdk } from '@/lib/partisia';
+import { Button } from './ui/button';
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,7 @@ type Props = PropsWithChildren<
     action: ChainAction | (() => Promise<ChainAction>);
     revalidatePath?: string;
     onSuccess?: () => void;
+    disableLoading?: boolean;
   }
 >;
 
@@ -31,6 +33,7 @@ export const ChainActionButton = ({
   revalidatePath: path,
   action,
   onSuccess,
+  disableLoading,
   ...rest
 }: Props) => {
   const [showModal, setShowModal] = useState(false);
@@ -61,6 +64,8 @@ export const ChainActionButton = ({
     throw new Error('');
   }, [action, onSuccess]);
 
+  const Component = disableLoading ? Button : SpinnerButton;
+
   return (
     <>
       <Dialog open={showModal} onOpenChange={setShowModal}>
@@ -74,7 +79,7 @@ export const ChainActionButton = ({
           <ConnectWallet />
         </DialogContent>
       </Dialog>
-      <SpinnerButton onClick={onClick} {...rest} />
+      <Component onClick={onClick} {...rest} />
     </>
   );
 };

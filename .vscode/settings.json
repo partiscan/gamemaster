@@ -1,4 +1,5 @@
 {
   "typescript.tsdk": "./web/node_modules/typescript/lib",
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "prettier.prettierPath": "./web/node_modules/prettier/index.cjs"
 }

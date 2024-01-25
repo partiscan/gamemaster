@@ -1,5 +1,7 @@
 import { fetchIdentity } from '@/server/user/cookie-auth';
-import { CircleUserRound } from 'lucide-react';
+import { CircleUserRound, PackagePlus } from 'lucide-react';
+import Link from 'next/link';
+import { FC } from 'react';
 import { Button } from '../ui/button';
 import {
   DropdownMenu,
@@ -9,7 +11,7 @@ import {
 import { ConnectWallet } from '../wallet/connect-wallet';
 import { DropdownMenuItemLogout } from './dropdown-menu-item-logout';
 
-export const Profile = async () => {
+export const Profile: FC = async () => {
   const user = await fetchIdentity();
 
   if (!user) {
@@ -17,15 +19,20 @@ export const Profile = async () => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='ghost'>
-          <CircleUserRound className='text-muted-foreground' />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className='mr-5'>
-        <DropdownMenuItemLogout />
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className='flex items-center gap-2'>
+      <Link href='/orchestrate-game'>
+        <PackagePlus className='text-muted-foreground' />
+      </Link>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='ghost'>
+            <CircleUserRound className='text-muted-foreground' />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className='mr-5'>
+          <DropdownMenuItemLogout />
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };

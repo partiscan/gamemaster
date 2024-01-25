@@ -1,7 +1,9 @@
 'use client';
 
+import { ChainActionButton } from '@/components/chain-action-button';
 import { useGameState } from '@/components/context/game-state.context';
-import { Button } from '@/components/ui/button';
+import { useIdentity } from '@/components/context/identity/identity.context';
+import { useSabotageActions } from '@/lib/game-actions/actions.hook';
 import { SabotageGame } from '@/server/game/get-game-state';
 import { ShieldHalf, SwordIcon } from 'lucide-react';
 import { FC } from 'react';
@@ -13,14 +15,31 @@ type Props = {
 
 export const SabotageGameScreen: FC<Props> = ({ game }) => {
   const { gameState } = useGameState();
+  const address = useIdentity()?.address;
   const calculating =
     gameState.currentGame.status === 'finished' && !game.result;
+
+  const actions = useSabotageActions();
+
+  const currentPlayer = gameState.players.findIndex(
+    (player) => player === address,
+  );
 
   return (
     <div className='w-full max-w-screen-xl'>
       <div className='grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-6'>
         {gameState.players.map((player, i) => (
-          <Button key={player} variant='ghost' className='relative h-fit'>
+          <ChainActionButton
+            key={player}
+            variant='ghost'
+            className='relative h-fit'
+            action={actions.inputAction(
+              i,
+              i === currentPlayer ? 'protect' : 'sabotage',
+            )}
+            disabled={currentPlayer < 0}
+            disableLoading
+          >
             <Player address={player} points={0}>
               <div className='absolute -right-7 top-0'>
                 {game.result?.[i]?.sabotage === true && (
@@ -32,7 +51,7 @@ export const SabotageGameScreen: FC<Props> = ({ game }) => {
                 )}
               </div>
             </Player>
-          </Button>
+          </ChainActionButton>
         ))}
       </div>
     </div>

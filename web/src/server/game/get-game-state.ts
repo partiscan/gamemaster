@@ -36,8 +36,8 @@ export const getGameState = (id: string): GameState => {
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 0,
-    status: 'not-started',
+    index: 2,
+    status: 'finished',
   },
   players: [
     '00527092bfb4b35a0331fe066199a41d45c213c368',
@@ -49,6 +49,12 @@ const getTestState = (): GameState => ({
     '00527092bfb4b35a0331fe066199a41d45c213c362',
   ],
   games: [
+    {
+      kind: 'sabotage',
+      protectPointCost: 0,
+      result: [{ sabotage: true, protect: true }],
+      sabotagePoint: 0,
+    },
     {
       kind: 'guess-the-number',
       winnerPoint: 0,

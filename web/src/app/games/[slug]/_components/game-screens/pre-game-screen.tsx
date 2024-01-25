@@ -2,19 +2,11 @@ import { ChainActionButton } from '@/components/chain-action-button';
 import { useGameState } from '@/components/context/game-state.context';
 import { signUp } from '@/contracts_gen/clients/gamemaster';
 import { GameHeadline } from '../typography/game-headline';
-import { GameSubheader } from '../typography/game-subheader';
 
 export const PreGameScreen = () => {
-  const { isAdmin, isInGame, contractId } = useGameState();
+  const { isInGame, contractId, isAdmin } = useGameState();
 
-  if (isAdmin) {
-    return (
-      <div className='text-center'>
-        <GameHeadline>You are the administrator!</GameHeadline>
-        <GameSubheader>Start the game when you are ready.</GameSubheader>
-      </div>
-    );
-  }
+  if (isAdmin) return null;
 
   if (!isInGame) {
     return (
@@ -23,7 +15,7 @@ export const PreGameScreen = () => {
           action={{
             contract: contractId,
             payload: signUp().toString('hex'),
-            payloadType: 'hex',
+            payloadType: 'hex_payload',
           }}
           className='mt-4'
         >
