@@ -7,6 +7,7 @@ import {
 import { Game } from '@/config';
 import { addGame } from '@/server/orchestrate-game/add-game';
 import { FC } from 'react';
+import Image from 'next/image';
 
 type Props = {
   game: Game;
@@ -22,7 +23,14 @@ export const GamePreviewCard: FC<Props> = ({ game }) => {
       }}
     >
       <button className='group w-full'>
-        <Card className='group: cursor-pointer bg-primary-foreground transition-all hover:bg-primary hover:text-primary-foreground'>
+        <Card className='group: cursor-pointer bg-primary-foreground transition-all hover:bg-primary hover:text-primary-foreground flex'>
+          <Image
+            className='shrink grow-0 rounded'
+            src={`/assets/games/${game.id}.webp`}
+            alt={''}
+            width={128}
+            height={128}
+          />
           <CardHeader>
             <CardTitle>{title}</CardTitle>
             <CardDescription className='group-hover:text-muted'>
