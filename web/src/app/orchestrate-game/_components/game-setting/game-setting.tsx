@@ -9,6 +9,7 @@ import { GAMES } from '@/config';
 import { removeGame } from '@/server/orchestrate-game/remove-game';
 import { GameSetting as GameSettingType } from '@/server/orchestrate-game/types';
 import { Trash2Icon } from 'lucide-react';
+import Image from 'next/image';
 import { FC } from 'react';
 import { GuessTheNumberGameSetting } from './guess-the-number-game-setting';
 import { SabotageGameSetting } from './sabotage-game-setting';
@@ -23,9 +24,18 @@ export const GameSetting: FC<Props> = ({ setting }) => {
 
   return (
     <Card className='relative'>
-      <CardHeader>
-        <CardTitle>{game.title}</CardTitle>
-        <CardDescription>{game.description}</CardDescription>
+      <CardHeader className='flex md:flex-row md:gap-4'>
+        <Image
+          className='shrink-0 grow-0 rounded'
+          src={`/assets/games/${game.id}.webp`}
+          alt={''}
+          width={128}
+          height={128}
+        />
+        <div className='gap-2 flex flex-col'>
+          <CardTitle>{game.title}</CardTitle>
+          <CardDescription>{game.description}</CardDescription>
+        </div>
       </CardHeader>
 
       <CardContent>
