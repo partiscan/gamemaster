@@ -4,9 +4,10 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/header/header';
 
-export const inter = Inter({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans',
+  display: 'swap',
+  variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
       lang='en'
       className={cn(
         'min-h-screen bg-background font-sans antialiased',
-        inter.className,
+        inter.variable,
       )}
     >
       <body>
