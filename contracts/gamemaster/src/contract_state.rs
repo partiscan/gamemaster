@@ -74,5 +74,5 @@ pub(crate) struct ContractState {
     pub players: Vec<Address>,
     pub current_game: CurrentGame,
     pub games: Vec<Game>,
-    pub points: Vec<Vec<u32>>,
+    pub points: Vec<Vec<i32>>,
 }

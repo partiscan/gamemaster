@@ -2,6 +2,8 @@ package examples;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import com.partisiablockchain.language.abicodegen.Gamemaster.ContractState;
 import com.partisiablockchain.language.abicodegen.Gamemaster.GameSettings;
 import com.partisiablockchain.language.abicodegen.Gamemaster.GameStatus;
@@ -16,7 +18,8 @@ public final class GamemasterTest extends GamemasterJunitContractTest {
 
     nextGame();
 
-    sendSabotageAction(account2, 1, true);
+    sendSabotageAction(account2, 1, false);
+    sendSabotageAction(account2, 2, true);
 
     endGame();
 
@@ -30,5 +33,10 @@ public final class GamemasterTest extends GamemasterJunitContractTest {
 
     assertThat(state.currentGame().index()).isEqualTo(1);
     assertThat(state.currentGame().status()).isEqualTo(new GameStatus.Finished());
+
+    List<List<Integer>> points = state.points();
+    assertThat(points.size()).isEqualTo(2);
+    assertThat(points.get(0)).isEqualTo(List.of(0, -10, -50));
+    assertThat(points.get(1)).isEqualTo(List.of(0, 0, -50));
   }
 }

@@ -17,6 +17,7 @@ use games::game_behaviour::GameBehaviour;
 
 use contract_state::{ContractState, CurrentGame, Game, GameStatus, PlayerOutcome, SecretVarType};
 use create_type_spec_derive::CreateTypeSpec;
+use pbc_contract_common::address::Address;
 use pbc_contract_common::context::ContractContext;
 use pbc_contract_common::events::EventGroup;
 use pbc_contract_common::shortname::ShortnameZkComputation;
@@ -153,6 +154,12 @@ fn end_game(
             ShortnameZkComputation::from_u32(0x61),
             vec![SecretVarType::SabotageGameResult {}],
         ));
+    } else {
+        let current_game_index = state.current_game.index;
+        if state.points.len() <= current_game_index as usize {
+            let points = vec![0; state.players.len()];
+            add_points(&mut state.points, &points);
+        }
     }
 
     state.current_game.status = GameStatus::Finished {};
@@ -173,14 +180,8 @@ fn guess(
         state.current_game.status == GameStatus::InProgress {},
         "Game isn't active"
     );
-    let player = state
-        .players
-        .iter()
-        .position(|&p| p == context.sender);
-    assert!(
-        player.is_some(),
-        "Only active players can send actions"
-    );
+    let player = state.players.iter().position(|&p| p == context.sender);
+    assert!(player.is_some(), "Only active players can send actions");
 
     if let Game::GuessTheNumber { .. } = game {
         return (
@@ -210,12 +211,7 @@ fn on_compute_complete(
     let mut variables_to_open = vec![];
     for variable_id in output_variables {
         let variable = zk_state.get_variable(variable_id).unwrap();
-        if let SecretVarType::GuessTheNumberGuess {
-            player,
-            guess,
-            pad,
-        } = variable.metadata
-        {
+        if let SecretVarType::GuessTheNumberGuess { player, guess, pad } = variable.metadata {
             variables_to_open.push(variable_id);
         }
 
@@ -301,15 +297,15 @@ fn on_variables_opened(
 
             for variable_id in opened_variables {
                 let variable = zk_state.get_variable(variable_id).unwrap();
-                if let SecretVarType::GuessTheNumberGuess {
-                    player,
-                    guess,
-                    pad,
-                } = variable.metadata
+                if let SecretVarType::GuessTheNumberGuess { player, guess, pad } = variable.metadata
                 {
                     let correct = read_variable_boolean(&variable);
                     if correct {
                         *winner = Some(player);
+                        let mut points = vec![0; state.players.len()];
+                        points[player as usize] = *winner_point as i32;
+
+                        add_points(&mut state.points, &points);
                         state.current_game.status = GameStatus::Finished {};
                     } else {
                         wrong_guesses.push(guess);
@@ -331,9 +327,54 @@ fn on_variables_opened(
                 }
             }
 
+            let game_points = calculate_sabotage_points(
+                &state.players,
+                result,
+                *sabotage_point,
+                *protect_point_cost,
+            );
+
+            add_points(&mut state.points, &game_points);
+
             (state, vec![], vec![])
         }
     }
+}
+
+fn calculate_sabotage_points(
+    players: &Vec<Address>,
+    result: &Option<Vec<PlayerOutcome>>,
+    sabotage_points: u32,
+    protect_point_cost: u32,
+) -> Vec<i32> {
+    players
+        .iter()
+        .enumerate()
+        .map(|(i, _)| {
+            let mut local_point = 0;
+            if let Some(result) = result {
+                let local_result = result.get(i).unwrap();
+                if local_result.sabotage {
+                    local_point -= sabotage_points as i32;
+                } else if local_result.protect {
+                    local_point -= protect_point_cost as i32;
+                }
+            }
+            local_point
+        })
+        .collect()
+}
+
+fn add_points(state_points: &mut Vec<Vec<i32>>, points: &Vec<i32>) {
+    let default_points = vec![];
+    let previous_points = state_points.last().unwrap_or(&default_points);
+    let new_points = points
+        .iter()
+        .enumerate()
+        .map(|(i, p)| p + previous_points.get(i).unwrap_or(&0))
+        .collect::<Vec<i32>>();
+
+    state_points.push(new_points);
 }
 
 fn read_sabotage_game_result(result: &ZkClosed<SecretVarType>) -> Vec<PlayerOutcome> {
