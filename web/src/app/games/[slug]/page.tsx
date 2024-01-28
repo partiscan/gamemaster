@@ -8,19 +8,22 @@ import { GameStatus } from './_components/game-status';
 import { GamesOverview } from './_components/games-overview';
 import { MainGameScreen } from './_components/main-game-screen';
 
-const GamePage = async () => {
-  const id = 'test'; // TODO: get from router
-  const state = getGameState(id);
+type PageProps = {
+  params: { slug: string };
+};
 
+const GamePage = async ({ params }: PageProps) => {
+  const id =
+    params.slug === 'test'
+      ? '000000000000000000000000000000000000000000'
+      : params.slug;
+  const state = await getGameState(id);
   if (!state) return null;
 
   return (
     <GamemasterServerProvider>
       <ServerIdentityProvider>
-        <GameStateProvider
-          id='000000000000000000000000000000000000000000'
-          defaultGameState={state}
-        >
+        <GameStateProvider id={id} defaultGameState={state}>
           <div className='flex flex-col items-center gap-2 text-center'>
             <h2 className='text-lg font-semibold'>Games</h2>
             <GamesOverview />

@@ -14,7 +14,7 @@ export const GamePoints: FC<Props> = ({ game }) => {
     return (
       <>
         <div>Protection costs {game.protectPointCost} points</div>
-        <div>Sabotage takes {game.sabotagePoint} points</div>
+        <div>Sabotage costs {game.sabotagePoint} points</div>
       </>
     );
   }

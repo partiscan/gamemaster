@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        "sabotage-players": "repeat(auto-fit, minmax(130px, 1fr))"
+      },
       fontFamily: {
         sans: ['var(--font-inter)'],
       },

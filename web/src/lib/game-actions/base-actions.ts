@@ -27,6 +27,10 @@ export class BaseActions {
   }
 
   public inputZkSecret(method: string, secret: number): Buffer {
+    if (!this.address) {
+      throw new Error('cant do actions without an address');
+    }
+
     const fnBuilder = new FnRpcBuilder(method, this.abi);
     const additionalRpc = fnBuilder.getBytes();
 

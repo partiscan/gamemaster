@@ -22,7 +22,7 @@ import { ConnectWallet } from './wallet/connect-wallet';
 
 type Props = PropsWithChildren<
   ComponentProps<typeof SpinnerButton> & {
-    action: ChainAction | (() => Promise<ChainAction>);
+    action: ChainAction | (() => ChainAction) | (() => Promise<ChainAction>);
     revalidatePath?: string;
     onSuccess?: () => void;
     disableLoading?: boolean;

@@ -15,7 +15,7 @@ export const SABOTAGE = {
   id: 'sabotage',
   title: 'Sabotage',
   description:
-    'The players can secretly sabotage or protect. Protection costs points. Sabotage takes points.',
+    'The players can secretly sabotage or protect.',
 } as const satisfies Game;
 
 export const GAMES = [GUESS_THE_NUMBER, SABOTAGE] as const;

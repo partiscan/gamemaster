@@ -4,6 +4,7 @@ import { GameState, getGameState } from '@/server/game/get-game-state';
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { useIdentity } from './identity/identity.context';
 import { BlockchainPublicKey } from '@partisiablockchain/zk-client';
+import next from 'next';
 
 type GameStateContextType = {
   gameState: GameState;
@@ -26,7 +27,10 @@ export const GameStateProvider: React.FC<
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      setGameState(await getGameState(id));
+      const nextState = await getGameState(id);
+      if (!nextState) return;
+
+      setGameState(nextState);
     }, REFRESH_INTERVAL);
 
     return () => clearInterval(interval);
