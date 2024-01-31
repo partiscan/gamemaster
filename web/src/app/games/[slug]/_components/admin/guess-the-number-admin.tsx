@@ -6,6 +6,7 @@ import { Slider } from '@/components/ui/slider';
 import { useGuessTheNumberActions } from '@/lib/game-actions/actions.hook';
 import { useEffect, useState } from 'react';
 import { AdminActionBox } from './admin-action-box';
+import { useCanGameStart } from './use-can-game-start';
 
 const MAX_NUMBER = 255;
 export const GuessTheNumberAdmin = () => {
@@ -16,10 +17,13 @@ export const GuessTheNumberAdmin = () => {
   }, []);
 
   const actions = useGuessTheNumberActions();
+  const canGameStart = useCanGameStart();
 
   return (
     <AdminActionBox>
-      <div className='my-5 w-full items-center space-y-5 text-sm font-semibold'>
+      <div className=' w-full items-center space-y-5 text-sm font-semibold'>
+        <div>The game will start when the secret number is set.</div>
+
         <Label htmlFor='secret-number'>Secret number: {secretNumber}</Label>
 
         <Slider
@@ -33,9 +37,15 @@ export const GuessTheNumberAdmin = () => {
         />
         <ChainActionButton
           action={actions.secretNumberInput(-Math.floor((MAX_NUMBER - 1) / 2))}
+          disabled={!canGameStart}
         >
           Set Secret Number
         </ChainActionButton>
+        {!canGameStart && (
+          <div className='text-red-900'>
+            Need more players to start the game.
+          </div>
+        )}
       </div>
     </AdminActionBox>
   );

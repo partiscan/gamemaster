@@ -12,7 +12,7 @@ type Props = Omit<ComponentProps<typeof Button>, 'onClick'> & {
   onClick?: () => Promise<boolean>;
 };
 
-export const SpinnerButton: FC<Props> = ({ onClick, ...rest }) => {
+export const SpinnerButton: FC<Props> = ({ onClick, disabled, ...rest }) => {
   const [spinner, setSpinner] = useState(false);
 
   const spinnerClick = useCallback(async () => {
@@ -30,7 +30,7 @@ export const SpinnerButton: FC<Props> = ({ onClick, ...rest }) => {
   }, [onClick]);
 
   return (
-    <Button onClick={spinnerClick} {...rest} disabled={spinner}>
+    <Button onClick={spinnerClick} {...rest} disabled={spinner || disabled}>
       {spinner ? <Spinner /> : rest.children}
     </Button>
   );
