@@ -10,12 +10,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { GAMES } from '@/config';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { GamePreviewCard } from './game-preview-card';
+import { addGame } from '@/server/create-arcade/add-game';
 
 export const AddGameModal: FC = () => {
+  const [showModal, setShowModal] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
         <button>
           <Card className='relative flex h-full w-full cursor-pointer items-center justify-center text-muted-foreground hover:bg-muted hover:text-primary'>
@@ -31,7 +33,14 @@ export const AddGameModal: FC = () => {
           Choose a game to add to the Arcade.
         </DialogDescription>
         {GAMES.map((game) => (
-          <GamePreviewCard key={game.title} game={game} />
+          <GamePreviewCard
+            key={game.title}
+            game={game}
+            onClick={async () => {
+              await addGame(game);
+              setShowModal(false);
+            }}
+          />
         ))}
       </DialogContent>
     </Dialog>

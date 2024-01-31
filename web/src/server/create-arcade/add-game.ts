@@ -38,7 +38,7 @@ const makeSetting = (game: Game): GameSetting => {
   throw new Error('Invalid game type');
 };
 
-export const addGame = (game: Game) => {
+export const addGame = async (game: Game) => {
   const settings = getStorage();
 
   const newSettings = [...settings, makeSetting(game)];

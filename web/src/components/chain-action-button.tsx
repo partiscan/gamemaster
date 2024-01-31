@@ -71,7 +71,7 @@ export const ChainActionButton = ({
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Sign transaction</DialogTitle>
+            <DialogTitle>Connect Wallet</DialogTitle>
           </DialogHeader>
           <DialogDescription>
             You need to connect your wallet to sign this transaction.

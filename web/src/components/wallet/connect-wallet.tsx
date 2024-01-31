@@ -5,6 +5,13 @@ import PartisiaSdk from 'partisia-sdk';
 import { FC, useState } from 'react';
 import { login } from '../../server/user/auth';
 import { Button } from '../ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '../ui/dialog';
 
 type Props = {
   text?: string;
@@ -52,21 +59,30 @@ export const ConnectWallet: FC<Props> = ({ text, className }) => {
         Connect Wallet
       </Button>
       {error === 'no-wallet' && (
-        <div>
-          <p className='mt-2 text-sm font-medium text-red-700'>
-            Error: You need to install the{' '}
-            <Link
-              href={
-                'https://chromewebstore.google.com/detail/partisia-wallet/gjkdbeaiifkpoencioahhcilildpjhgh'
-              }
-              target='_blank'
-              className='font-semibold text-red-900 underline underline-offset-2'
-            >
-              Partisia Wallet
-            </Link>{' '}
-            to use this site.
-          </p>
-        </div>
+        <Dialog open={true} onOpenChange={() => setError(undefined)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Connect Wallet</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <div>
+                <p className='mt-2 text-sm font-medium text-red-700'>
+                  Error: You need to install the{' '}
+                  <Link
+                    href={
+                      'https://chromewebstore.google.com/detail/partisia-wallet/gjkdbeaiifkpoencioahhcilildpjhgh'
+                    }
+                    target='_blank'
+                    className='font-semibold text-red-900 underline underline-offset-2'
+                  >
+                    Partisia Wallet
+                  </Link>{' '}
+                  to use this site.
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
