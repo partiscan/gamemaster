@@ -41,7 +41,7 @@ export const getGameState = async (id: string): Promise<GameState | null> => {
     if (contractState.type !== 'ZERO_KNOWLEDGE') {
       throw new Error('Invalid contract type');
     }
-    
+
     const state = contractState.serializedContract.openState.openState.data;
     return {
       administrator: state.administrator.asString(),
@@ -93,8 +93,8 @@ function toGameStatus(
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 2,
-    status: 'finished',
+    index: 0,
+    status: 'in-progress',
   },
   players: [
     '00527092bfb4b35a0331fe066199a41d45c213c368',
@@ -127,7 +127,11 @@ const getTestState = (): GameState => ({
       sabotagePoint: 0,
     },
   ],
-  points: [[1, 1, 1]],
+  points: [
+    [1, 1, 1],
+    [1100, 1, 1],
+    [1100, 0, 0],
+  ],
   engineKeys: [
     'Ax3kZlMV9JW6EE/74YO9X8Y7zVeD8TubNlBaY+IMfARg',
     'Ax3kZlMV9JW6EE/74YO9X8Y7zVeD8TubNlBaY+IMfARg',
