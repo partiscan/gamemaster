@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { signTransaction } from '@/lib/partisia';
-import { deployGame } from '@/server/orchestrate-game/deploy-game';
+import { deployGame } from '@/server/create-arcade/deploy-game';
 
 const ZK_CONTRACT = '018bc1ccbb672b87710327713c97d43204905082cb';
 

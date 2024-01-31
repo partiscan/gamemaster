@@ -5,7 +5,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Game } from '@/config';
-import { addGame } from '@/server/orchestrate-game/add-game';
+import { addGame } from '@/server/create-arcade/add-game';
 import { FC } from 'react';
 import Image from 'next/image';
 

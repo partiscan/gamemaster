@@ -20,7 +20,7 @@ export const Profile: FC = async () => {
 
   return (
     <div className='flex items-center gap-2'>
-      <Link href='/orchestrate-game'>
+      <Link href='/create-arcade'>
         <PackagePlus className='text-muted-foreground' />
       </Link>
       <DropdownMenu>

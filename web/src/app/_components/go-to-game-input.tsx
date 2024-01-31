@@ -9,7 +9,7 @@ export const GoToGameInput: FC = () => {
 
   return (
     <Input
-      className='mt-4 max-w-80 font-mono text-xs'
+      className='mt-2 max-w-80 font-mono text-xs'
       placeholder='Paste the game contract address'
       onChange={(e) => {
         const address = e.target.value;

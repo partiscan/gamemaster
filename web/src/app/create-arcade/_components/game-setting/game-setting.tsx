@@ -6,8 +6,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { GAMES } from '@/config';
-import { removeGame } from '@/server/orchestrate-game/remove-game';
-import { GameSetting as GameSettingType } from '@/server/orchestrate-game/types';
+import { removeGame } from '@/server/create-arcade/remove-game';
+import { GameSetting as GameSettingType } from '@/server/create-arcade/types';
 import { Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { FC } from 'react';

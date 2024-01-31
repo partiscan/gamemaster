@@ -1,8 +1,8 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { changeGameSetting } from '@/server/orchestrate-game/change-game-setting';
-import { SabotageGameSetting as SabotageGameSettingType } from '@/server/orchestrate-game/types';
+import { changeGameSetting } from '@/server/create-arcade/change-game-setting';
+import { SabotageGameSetting as SabotageGameSettingType } from '@/server/create-arcade/types';
 import { Label } from '@radix-ui/react-label';
 import { ChangeEvent, FC } from 'react';
 

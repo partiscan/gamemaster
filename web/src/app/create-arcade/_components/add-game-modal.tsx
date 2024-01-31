@@ -28,7 +28,7 @@ export const AddGameModal: FC = () => {
           <DialogTitle>Add a game</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Choose a game to add to the collection of games.
+          Choose a game to add to the Arcade.
         </DialogDescription>
         {GAMES.map((game) => (
           <GamePreviewCard key={game.title} game={game} />
