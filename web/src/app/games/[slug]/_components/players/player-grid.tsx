@@ -8,7 +8,7 @@ export const PlayerGrid = () => {
 
   if (!gameState.players.length) {
     return (
-      <div className='mt-4'>
+      <div className='mt-4 mx-auto'>
         <h3 className='font-medium'>Players</h3>
         No players yet!
       </div>
@@ -16,7 +16,7 @@ export const PlayerGrid = () => {
   }
 
   return (
-    <div className='mt-4 w-full max-w-screen-xl'>
+    <div className='mt-4 w-full max-w-screen-xl mx-auto'>
       <h3 className='font-medium'>Players</h3>
       <div className='grid grid-cols-sabotage-players gap-2'>
         {gameState.players.map((player, i) => (

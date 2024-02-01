@@ -8,6 +8,7 @@ import { Slider } from '@/components/ui/slider';
 import { useGuessTheNumberActions } from '@/lib/game-actions/actions.hook';
 import { GuessTheNumberGame } from '@/server/game/get-game-state';
 import { FC, useState } from 'react';
+import { PlayerGrid } from '../players/player-grid';
 
 type Props = {
   game: GuessTheNumberGame;
@@ -24,34 +25,44 @@ export const GuessTheNumberGameScreen: FC<Props> = ({ game }) => {
   } = useGameState();
   const address = useIdentity()?.address;
   const actions = useGuessTheNumberActions();
-  if (!address || !isInGame || status === 'not-started') return null;
+  if (status === 'not-started') return null;
 
   const gameIsFinished = status === 'finished';
 
   return (
-    <div className='p-4 text-center'>
-      {isInGame && status === 'in-progress' && (
-        <div className='mx-auto w-full max-w-sm items-center space-y-5 text-sm font-semibold'>
-          <Label htmlFor='guess-number'>Guess: {guess}</Label>
-          <Slider
-            id='guess-number'
-            value={[guess]}
-            onValueChange={(value) => setGuess(value[0])}
-            min={0}
-            max={255}
-            className='mx-auto min-w-48'
-          />
-          <ChainActionButton action={actions.guess(guess)}>
-            Guess!
-          </ChainActionButton>
-        </div>
-      )}
+    <div className='text-center w-full'>
+      <div>
+        <span className='text-sm font-medium'>Wrong guesses:</span>{' '}
+        <span className='font-mono text-sm'>
+          {game.wrongGuesses.length > 0
+            ? game.wrongGuesses.join(', ')
+            : 'None yet'}
+        </span>
+      </div>
+      {/* {address && isInGame && status === 'in-progress' && ( */}
+      <div className='mx-auto mt-4 w-full max-w-sm items-center space-y-5 border border-gray-300 bg-gray-50 p-5 text-sm font-semibold'>
+        <Label htmlFor='guess-number'>Guess: {guess}</Label>
+        <Slider
+          id='guess-number'
+          value={[guess]}
+          onValueChange={(value) => setGuess(value[0])}
+          min={0}
+          max={255}
+          className='mx-auto min-w-48'
+        />
+        <ChainActionButton action={actions.guess(guess)}>
+          Guess!
+        </ChainActionButton>
+      </div>
+      {/* )} */}
       {gameIsFinished && (
         <div>
           {game.winner && <div>Winner: {game.winner}</div>}
           {!game.winner && <div>There was no winner!</div>}
         </div>
       )}
+
+      <PlayerGrid />
     </div>
   );
 };

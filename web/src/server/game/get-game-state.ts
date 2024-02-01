@@ -93,7 +93,7 @@ function toGameStatus(
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 0,
+    index: 2,
     status: 'in-progress',
   },
   players: [
@@ -117,7 +117,7 @@ const getTestState = (): GameState => ({
     {
       kind: 'guess-the-number',
       winnerPoint: 0,
-      wrongGuesses: [],
+      wrongGuesses: [10, 15, 13],
       winner: undefined,
     },
     {
