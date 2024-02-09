@@ -15,7 +15,10 @@ use core::panic;
 use bitvec::prelude::*;
 use games::game_behaviour::GameBehaviour;
 
-use contract_state::{ContractState, CurrentGame, Game, GameStatus, PlayerOutcome, SecretVarType};
+use contract_state::{
+    ContractState, CurrentGame, Game, GameStatus, PlayerOutcome, SecretVarType,
+    SplitOrConquerOutcome, SplitOrConquerPlayerDecision,
+};
 use create_type_spec_derive::CreateTypeSpec;
 use pbc_contract_common::address::Address;
 use pbc_contract_common::context::ContractContext;
@@ -26,6 +29,8 @@ use pbc_contract_common::zk::{ZkClosed, ZkInputDef, ZkStateChange};
 use pbc_zk::{Sbi8, SecretVarId};
 use read_write_rpc_derive::ReadWriteRPC;
 
+use crate::contract_state::SplitDecision;
+
 #[derive(CreateTypeSpec, ReadWriteRPC)]
 enum GameSettings {
     #[discriminant(0)]
@@ -35,6 +40,8 @@ enum GameSettings {
         sabotage_point: u32,
         protect_point_cost: u32,
     },
+    #[discriminant(2)]
+    SplitOrConquer { split_points: u16 },
 }
 
 #[init(zk = true)]
@@ -58,6 +65,10 @@ fn initialize(
             } => Game::Sabotage {
                 sabotage_point,
                 protect_point_cost,
+                result: None,
+            },
+            GameSettings::SplitOrConquer { split_points } => Game::SplitOrConquer {
+                split_points,
                 result: None,
             },
         })
@@ -154,6 +165,12 @@ fn end_game(
             ShortnameZkComputation::from_u32(0x61),
             vec![SecretVarType::SabotageGameResult {}],
         ));
+    } else if let Game::SplitOrConquer { .. } = &mut state.games[state.current_game.index as usize]
+    {
+        zk_events.push(ZkStateChange::start_computation(
+            ShortnameZkComputation::from_u32(0x62),
+            vec![SecretVarType::SplitOrConquerResult {}],
+        ));
     } else {
         let current_game_index = state.current_game.index;
         if state.points.len() <= current_game_index as usize {
@@ -218,6 +235,10 @@ fn on_compute_complete(
         if let SecretVarType::SabotageGameResult {} = variable.metadata {
             variables_to_open.push(variable_id);
         }
+
+        if let SecretVarType::SplitOrConquerResult {} = variable.metadata {
+            variables_to_open.push(variable_id);
+        }
     }
 
     (
@@ -269,6 +290,32 @@ fn on_secret_input(
             );
 
             let input_def = ZkInputDef::with_metadata(SecretVarType::SabotageSecretAction {});
+            (state, vec![], input_def)
+        }
+        Game::SplitOrConquer {
+            split_points,
+            result,
+        } => {
+            assert!(
+                state.current_game.status == GameStatus::InProgress {},
+                "Game isn't active"
+            );
+            let player = state.players.iter().position(|&p| p == context.sender);
+            assert!(player.is_some(), "Only active players can send actions");
+
+            assert!(
+                zk_state
+                    .secret_variables
+                    .iter()
+                    .chain(zk_state.pending_inputs.iter())
+                    .all(|(_, v)| v.owner != context.sender),
+                "Only one action per player is allowed"
+            );
+
+            let input_def = ZkInputDef::with_metadata(SecretVarType::SplitOrConquerSecretAction {
+                player: player.unwrap() as u32,
+            });
+
             (state, vec![], input_def)
         }
     }
@@ -338,7 +385,96 @@ fn on_variables_opened(
 
             (state, vec![], vec![])
         }
+        Game::SplitOrConquer {
+            split_points,
+            result,
+        } => {
+            for variable_id in opened_variables {
+                let variable = zk_state.get_variable(variable_id).unwrap();
+                if let SecretVarType::SplitOrConquerResult {} = variable.metadata {
+                    *result = Some(read_split_or_conquer_game_result(
+                        state.players.len(),
+                        &variable,
+                    ));
+                }
+            }
+
+            if let Some(result) = result {
+                let game_points =
+                    calculate_split_or_conquer_points(&state.players, result, *split_points);
+
+                add_points(&mut state.points, &game_points);
+            }
+
+            (state, vec![], vec![])
+        }
     }
+}
+
+fn calculate_split_or_conquer_points(
+    players: &Vec<Address>,
+    result: &Vec<SplitOrConquerOutcome>,
+    split_points: u16,
+) -> Vec<i32> {
+    let split_points_i32 = i32::from(split_points);
+
+    let mut points = result
+        .iter()
+        .enumerate()
+        .flat_map(|(i, outcome)| {
+            let player_a = &outcome.player_a.split;
+            let player_b = &outcome.player_b.split;
+
+            match player_a {
+                SplitDecision::Conquer {} => {
+                    // Both choose Conquer, so no one gets points
+                    if let SplitDecision::Conquer {} = player_b {
+                        return vec![0, 0];
+                    }
+
+                    // Player A is conquering and B is not, so player A gets all the points
+                    return vec![split_points_i32 * 2, 0];
+                }
+                SplitDecision::Split {} => {
+                    match player_b {
+                        SplitDecision::Conquer {} => {
+                            // Player A is splitting and B is conquering, so player B gets all the points
+                            return vec![0, split_points_i32 * 2];
+                        }
+                        SplitDecision::Split {} => {
+                            // Both players are splitting, so they get the split points
+                            return vec![split_points_i32, split_points_i32];
+                        }
+                        SplitDecision::NoAction {} => {
+                            // Player A is splitting and B had no action, so player A gets all the points.
+                            return vec![split_points_i32 * 2, 0];
+                        }
+                    }
+                }
+                SplitDecision::NoAction {} => {
+                    match player_b {
+                        SplitDecision::NoAction {} => {
+                            // Both players had no action, so they get nothing
+                            return vec![0, 0];
+                        }
+                        SplitDecision::Split {} => {
+                            return vec![0, split_points_i32 * 2];
+                        }
+                        SplitDecision::Conquer {} => {
+                            return vec![0, split_points_i32 * 2];
+                        }
+                    }
+                }
+            }
+        })
+        .collect::<Vec<i32>>();
+
+    // Add points for missing player
+    if points.len() != players.len() {
+        points.push(split_points_i32)
+    }
+
+    points
 }
 
 fn calculate_sabotage_points(
@@ -375,6 +511,45 @@ fn add_points(state_points: &mut Vec<Vec<i32>>, points: &Vec<i32>) {
         .collect::<Vec<i32>>();
 
     state_points.push(new_points);
+}
+
+fn read_split_or_conquer_game_result(
+    player_count: usize,
+    result: &ZkClosed<SecretVarType>,
+) -> Vec<SplitOrConquerOutcome> {
+    let mut buffer = [0u8; 16];
+    buffer.copy_from_slice(result.data.as_ref().unwrap().as_slice());
+
+    let mut bits = buffer.view_bits::<Lsb0>().to_bitvec();
+    bits.reverse();
+
+    let max_games = player_count / 2;
+
+    bits.chunks(2)
+        .enumerate()
+        .map(|(i, b)| {
+            let decision = if b.get(0).unwrap() == true {
+                SplitDecision::Conquer {}
+            } else if b.get(1).unwrap() == true {
+                SplitDecision::Split {}
+            } else {
+                SplitDecision::NoAction {}
+            };
+
+            SplitOrConquerPlayerDecision {
+                player_index: i as u32,
+                split: decision,
+            }
+        })
+        .collect::<Vec<SplitOrConquerPlayerDecision>>()
+        .chunks(2)
+        .take(max_games)
+        .enumerate()
+        .map(|(i, p)| SplitOrConquerOutcome {
+            player_a: p.get(0).unwrap().clone(),
+            player_b: p.get(1).unwrap().clone(),
+        })
+        .collect::<Vec<SplitOrConquerOutcome>>()
 }
 
 fn read_sabotage_game_result(result: &ZkClosed<SecretVarType>) -> Vec<PlayerOutcome> {

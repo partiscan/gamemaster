@@ -12,6 +12,10 @@ impl GameBehaviour for Game {
                 *ready_to_start = true;
             }
             Game::Sabotage { .. } => {}
+            Game::SplitOrConquer {
+                split_points,
+                result,
+            } => {}
         }
     }
 
@@ -19,6 +23,10 @@ impl GameBehaviour for Game {
         match self {
             Game::GuessTheNumber { ready_to_start, .. } => *ready_to_start,
             Game::Sabotage { result, .. } => true,
+            Game::SplitOrConquer {
+                split_points,
+                result,
+            } => true,
         }
     }
 }

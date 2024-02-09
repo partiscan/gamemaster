@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.assertj.core.api.Assertions;
 
-import com.partisiablockchain.BlockchainAddress;
 import com.partisiablockchain.language.abicodegen.Gamemaster;
 import com.partisiablockchain.language.abicodegen.Gamemaster.CurrentGame;
 import com.partisiablockchain.language.abicodegen.Gamemaster.Game;

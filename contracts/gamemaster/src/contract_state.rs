@@ -13,11 +13,7 @@ pub enum SecretVarType {
     GuessTheNumberSecretNumber {},
 
     #[discriminant(1)]
-    GuessTheNumberGuess {
-        guess: u8,
-        player: u32,
-        pad: u8,
-    },
+    GuessTheNumberGuess { guess: u8, player: u32, pad: u8 },
 
     /// Sabotage
     #[discriminant(2)]
@@ -25,6 +21,13 @@ pub enum SecretVarType {
 
     #[discriminant(3)]
     SabotageGameResult {},
+
+    /// Split or Conquer
+    #[discriminant(4)]
+    SplitOrConquerSecretAction { player: u32 },
+
+    #[discriminant(5)]
+    SplitOrConquerResult {},
 }
 
 #[repr(C)]
@@ -32,6 +35,31 @@ pub enum SecretVarType {
 pub struct PlayerOutcome {
     pub sabotage: bool,
     pub protect: bool,
+}
+
+#[derive(Debug, ReadWriteState, CreateTypeSpec, Clone)]
+#[repr(C)]
+pub enum SplitDecision {
+    #[discriminant(0)]
+    NoAction {},
+    #[discriminant(1)]
+    Split {},
+    #[discriminant(2)]
+    Conquer {},
+}
+
+#[repr(C)]
+#[derive(Debug, CreateTypeSpec, Clone, ReadWriteState)]
+pub struct SplitOrConquerPlayerDecision {
+    pub player_index: u32,
+    pub split: SplitDecision,
+}
+
+#[repr(C)]
+#[derive(Debug, CreateTypeSpec, Clone, ReadWriteState)]
+pub struct SplitOrConquerOutcome {
+    pub player_a: SplitOrConquerPlayerDecision,
+    pub player_b: SplitOrConquerPlayerDecision,
 }
 
 #[derive(Debug, CreateTypeSpec, ReadWriteState, Clone)]
@@ -48,6 +76,11 @@ pub enum Game {
         sabotage_point: u32,
         protect_point_cost: u32,
         result: Option<Vec<PlayerOutcome>>,
+    },
+    #[discriminant(2)]
+    SplitOrConquer {
+        split_points: u16,
+        result: Option<Vec<SplitOrConquerOutcome>>,
     },
 }
 

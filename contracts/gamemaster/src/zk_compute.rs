@@ -3,6 +3,12 @@ use pbc_zk::*;
 #[allow(unused)]
 const SECRET_NUMBER_VARIABLE_KIND: u8 = 0u8;
 
+#[derive(read_write_state_derive::ReadWriteState)]
+pub struct SplitOrConquerSecretAction {
+    discriminant: u8,
+    player: u32,
+}
+
 #[zk_compute(shortname = 0x60)]
 pub fn guess(guess: u16) -> Sbi1 {
     let guess = Sbi8::from(guess as i8);
@@ -68,6 +74,36 @@ pub fn sabotage_action() -> Sbi128 {
                 result = result | (Sbi128::from(SABOTAGE_ACTION as i128) << bits_to_shift as usize);
             }
         }
+    }
+
+    result
+}
+
+/// Two bits for each player:
+/// 00: No action for this user
+/// 01: Player chose Split
+/// 10: Player chose Conquer
+#[zk_compute(shortname = 0x62)]
+pub fn split_or_conquer_action() -> Sbi128 {
+    let mut result = Sbi128::from(0);
+
+    for variable_id in secret_variable_ids() {
+        let action = load_sbi::<Sbi8>(variable_id);
+        let two_bits = action & Sbi8::from(0b0000_0011);
+
+        let meta_data = load_metadata::<SplitOrConquerSecretAction>(variable_id);
+        let player = meta_data.player;
+
+        let action_i128 = if two_bits == Sbi8::from(0b01) {
+            Sbi128::from(1)
+        } else if two_bits == Sbi8::from(0b10) {
+            Sbi128::from(2)
+        } else {
+            Sbi128::from(0)
+        };
+
+        let bits_to_shift = 128u32 - 2u32 - (player << 1);
+        result = result | (action_i128 << bits_to_shift as usize);
     }
 
     result

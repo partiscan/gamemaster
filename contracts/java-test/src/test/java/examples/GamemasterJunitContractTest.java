@@ -111,4 +111,15 @@ abstract public class GamemasterJunitContractTest extends JunitContractTest {
     public void guess(BlockchainAddress address, int guess) {
         blockchain.sendAction(address, contract, Gamemaster.guess((byte) guess));
     }
+
+    public void sendSecretSplitOrConquerAction(BlockchainAddress address, boolean split) {
+        blockchain.sendSecretInput(contract, address, createSecretSplitOrConquerInput(split), new byte[] {
+                0x40 });
+    }
+
+    CompactBitArray createSecretSplitOrConquerInput(boolean b) {
+        int secret = b ? 1 : 2;
+        return BitOutput.serializeBits(output -> output.writeUnsignedInt(secret, 8));
+    }
+
 }
