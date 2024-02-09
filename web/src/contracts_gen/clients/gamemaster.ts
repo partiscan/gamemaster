@@ -15,7 +15,7 @@ import {
 import {BigEndianByteOutput} from "@secata-public/bitmanipulation-ts";
 
 const fileAbi: FileAbi = new AbiParser(Buffer.from(
-  "5042434142490b000005040000000010020000000c47616d6553657474696e677300000002000001010002010000001247756573735468654e756d62657247616d65000000010000000c77696e6e65725f706f696e740301000000085361626f74616765000000020000000e7361626f746167655f706f696e74030000001270726f746563745f706f696e745f636f737403010000000d506c617965724f7574636f6d6500000002000000087361626f746167650c0000000770726f746563740c020000000447616d6500000002000005010006010000000e47756573735468654e756d626572000000040000000c77696e6e65725f706f696e74030000000d77726f6e675f677565737365730e010000000677696e6e657212030000000e72656164795f746f5f73746172740c01000000085361626f74616765000000030000000e7361626f746167655f706f696e74030000001270726f746563745f706f696e745f636f73740300000006726573756c74120e0003020000000a47616d655374617475730000000300000801000902000a010000000a4e6f745374617274656400000000010000000a496e50726f677265737300000000010000000846696e697368656400000000010000000b43757272656e7447616d650000000200000005696e64657803000000067374617475730007010000000d436f6e74726163745374617465000000050000000d61646d696e6973747261746f720d00000007706c61796572730e0d0000000c63757272656e745f67616d65000b0000000567616d65730e000400000006706f696e74730e0e08010000000b536563726574566172496400000001000000067261775f69640301000000134576656e74537562736372697074696f6e496400000001000000067261775f696408010000000f45787465726e616c4576656e74496400000001000000067261775f69640800000008010000000a696e697469616c697a65ffffffff0f000000010000000567616d65730e000002000000077369676e5f7570000000000002000000096e6578745f67616d6501000000000200000008656e645f67616d6502000000000200000005677565737310000000010000000567756573730113000000136f6e5f636f6d707574655f636f6d706c657465a8dadeeb0a00000000170000000f6f6e5f7365637265745f696e70757440000000000000000c7365637265745f696e7075740614000000136f6e5f7661726961626c65735f6f70656e65649fc99a8f0400000000000c",
+  "5042434142490b000005040000000018020000000c47616d6553657474696e677300000003000001010002020003010000001247756573735468654e756d62657247616d65000000010000000c77696e6e65725f706f696e740301000000085361626f74616765000000020000000e7361626f746167655f706f696e74030000001270726f746563745f706f696e745f636f737403010000000e53706c69744f72436f6e71756572000000010000000c73706c69745f706f696e747302010000000d506c617965724f7574636f6d6500000002000000087361626f746167650c0000000770726f746563740c020000000d53706c69744465636973696f6e0000000300000601000702000801000000084e6f416374696f6e00000000010000000553706c6974000000000100000007436f6e7175657200000000010000001c53706c69744f72436f6e71756572506c617965724465636973696f6e000000020000000c706c617965725f696e646578030000000573706c69740005010000001553706c69744f72436f6e717565724f7574636f6d650000000200000008706c617965725f61000900000008706c617965725f620009020000000447616d650000000300000c01000d02000e010000000e47756573735468654e756d626572000000040000000c77696e6e65725f706f696e74030000000d77726f6e675f677565737365730e010000000677696e6e657212030000000e72656164795f746f5f73746172740c01000000085361626f74616765000000030000000e7361626f746167655f706f696e74030000001270726f746563745f706f696e745f636f73740300000006726573756c74120e0004010000000e53706c69744f72436f6e71756572000000020000000c73706c69745f706f696e74730200000006726573756c74120e000a020000000a47616d6553746174757300000003000010010011020012010000000a4e6f745374617274656400000000010000000a496e50726f677265737300000000010000000846696e697368656400000000010000000b43757272656e7447616d650000000200000005696e6465780300000006737461747573000f010000000d436f6e74726163745374617465000000050000000d61646d696e6973747261746f720d00000007706c61796572730e0d0000000c63757272656e745f67616d6500130000000567616d65730e000b00000006706f696e74730e0e08010000000b536563726574566172496400000001000000067261775f69640301000000134576656e74537562736372697074696f6e496400000001000000067261775f696408010000000f45787465726e616c4576656e74496400000001000000067261775f69640800000008010000000a696e697469616c697a65ffffffff0f000000010000000567616d65730e000002000000077369676e5f7570000000000002000000096e6578745f67616d6501000000000200000008656e645f67616d6502000000000200000005677565737310000000010000000567756573730113000000136f6e5f636f6d707574655f636f6d706c657465a8dadeeb0a00000000170000000f6f6e5f7365637265745f696e70757440000000000000000c7365637265745f696e7075740614000000136f6e5f7661726961626c65735f6f70656e65649fc99a8f04000000000014",
   "hex"
 )).parseAbi();
 
@@ -23,11 +23,13 @@ type Option<K> = K | undefined;
 
 export type GameSettings = 
   | GameSettingsGuessTheNumberGame
-  | GameSettingsSabotage;
+  | GameSettingsSabotage
+  | GameSettingsSplitOrConquer;
 
 export enum GameSettingsD {
   GuessTheNumberGame = 0,
-  Sabotage = 1
+  Sabotage = 1,
+  SplitOrConquer = 2
 }
 
 function buildRpcGameSettings(val: GameSettings, builder: AbstractBuilder) {
@@ -36,6 +38,9 @@ function buildRpcGameSettings(val: GameSettings, builder: AbstractBuilder) {
   }
   if (val.discriminant === GameSettingsD.Sabotage) {
     buildRpcGameSettingsSabotage(val, builder);
+  }
+  if (val.discriminant === GameSettingsD.SplitOrConquer) {
+    buildRpcGameSettingsSplitOrConquer(val, builder);
   }
 }
 
@@ -46,6 +51,9 @@ function fromScValueGameSettings(enumValue: ScValueEnum): GameSettings {
   }
   if (item.name === "Sabotage") {
     return fromScValueGameSettingsSabotage(item);
+  }
+  if (item.name === "SplitOrConquer") {
+    return fromScValueGameSettingsSplitOrConquer(item);
   }
   throw Error("Should not happen");
 }
@@ -95,6 +103,27 @@ function fromScValueGameSettingsSabotage(structValue: ScValueStruct): GameSettin
   };
 }
 
+export interface GameSettingsSplitOrConquer {
+  discriminant: GameSettingsD.SplitOrConquer;
+  splitPoints: number;
+}
+
+export function newGameSettingsSplitOrConquer(splitPoints: number): GameSettingsSplitOrConquer {
+  return {discriminant: 2, splitPoints, };
+}
+
+function buildRpcGameSettingsSplitOrConquer(value: GameSettingsSplitOrConquer, builder: AbstractBuilder) {
+  const enumVariantBuilder = builder.addEnumVariant(GameSettingsD.SplitOrConquer);
+  enumVariantBuilder.addU16(value.splitPoints);
+}
+
+function fromScValueGameSettingsSplitOrConquer(structValue: ScValueStruct): GameSettingsSplitOrConquer {
+  return {
+    discriminant: GameSettingsD.SplitOrConquer,
+    splitPoints: structValue.getFieldValue("split_points")!.asNumber(),
+  };
+}
+
 export interface PlayerOutcome {
   sabotage: boolean;
   protect: boolean;
@@ -111,13 +140,114 @@ function fromScValuePlayerOutcome(structValue: ScValueStruct): PlayerOutcome {
   };
 }
 
+export type SplitDecision = 
+  | SplitDecisionNoAction
+  | SplitDecisionSplit
+  | SplitDecisionConquer;
+
+export enum SplitDecisionD {
+  NoAction = 0,
+  Split = 1,
+  Conquer = 2
+}
+
+function fromScValueSplitDecision(enumValue: ScValueEnum): SplitDecision {
+  const item = enumValue.item;
+  if (item.name === "NoAction") {
+    return fromScValueSplitDecisionNoAction(item);
+  }
+  if (item.name === "Split") {
+    return fromScValueSplitDecisionSplit(item);
+  }
+  if (item.name === "Conquer") {
+    return fromScValueSplitDecisionConquer(item);
+  }
+  throw Error("Should not happen");
+}
+
+export interface SplitDecisionNoAction {
+  discriminant: SplitDecisionD.NoAction;
+}
+
+export function newSplitDecisionNoAction(): SplitDecisionNoAction {
+  return {discriminant: 0, };
+}
+
+function fromScValueSplitDecisionNoAction(structValue: ScValueStruct): SplitDecisionNoAction {
+  return {
+    discriminant: SplitDecisionD.NoAction,
+  };
+}
+
+export interface SplitDecisionSplit {
+  discriminant: SplitDecisionD.Split;
+}
+
+export function newSplitDecisionSplit(): SplitDecisionSplit {
+  return {discriminant: 1, };
+}
+
+function fromScValueSplitDecisionSplit(structValue: ScValueStruct): SplitDecisionSplit {
+  return {
+    discriminant: SplitDecisionD.Split,
+  };
+}
+
+export interface SplitDecisionConquer {
+  discriminant: SplitDecisionD.Conquer;
+}
+
+export function newSplitDecisionConquer(): SplitDecisionConquer {
+  return {discriminant: 2, };
+}
+
+function fromScValueSplitDecisionConquer(structValue: ScValueStruct): SplitDecisionConquer {
+  return {
+    discriminant: SplitDecisionD.Conquer,
+  };
+}
+
+export interface SplitOrConquerPlayerDecision {
+  playerIndex: number;
+  split: SplitDecision;
+}
+
+export function newSplitOrConquerPlayerDecision(playerIndex: number, split: SplitDecision): SplitOrConquerPlayerDecision {
+  return {playerIndex, split};
+}
+
+function fromScValueSplitOrConquerPlayerDecision(structValue: ScValueStruct): SplitOrConquerPlayerDecision {
+  return {
+    playerIndex: structValue.getFieldValue("player_index")!.asNumber(),
+    split: fromScValueSplitDecision(structValue.getFieldValue("split")!.enumValue()),
+  };
+}
+
+export interface SplitOrConquerOutcome {
+  playerA: SplitOrConquerPlayerDecision;
+  playerB: SplitOrConquerPlayerDecision;
+}
+
+export function newSplitOrConquerOutcome(playerA: SplitOrConquerPlayerDecision, playerB: SplitOrConquerPlayerDecision): SplitOrConquerOutcome {
+  return {playerA, playerB};
+}
+
+function fromScValueSplitOrConquerOutcome(structValue: ScValueStruct): SplitOrConquerOutcome {
+  return {
+    playerA: fromScValueSplitOrConquerPlayerDecision(structValue.getFieldValue("player_a")!.structValue()),
+    playerB: fromScValueSplitOrConquerPlayerDecision(structValue.getFieldValue("player_b")!.structValue()),
+  };
+}
+
 export type Game = 
   | GameGuessTheNumber
-  | GameSabotage;
+  | GameSabotage
+  | GameSplitOrConquer;
 
 export enum GameD {
   GuessTheNumber = 0,
-  Sabotage = 1
+  Sabotage = 1,
+  SplitOrConquer = 2
 }
 
 function fromScValueGame(enumValue: ScValueEnum): Game {
@@ -127,6 +257,9 @@ function fromScValueGame(enumValue: ScValueEnum): Game {
   }
   if (item.name === "Sabotage") {
     return fromScValueGameSabotage(item);
+  }
+  if (item.name === "SplitOrConquer") {
+    return fromScValueGameSplitOrConquer(item);
   }
   throw Error("Should not happen");
 }
@@ -170,6 +303,24 @@ function fromScValueGameSabotage(structValue: ScValueStruct): GameSabotage {
     sabotagePoint: structValue.getFieldValue("sabotage_point")!.asNumber(),
     protectPointCost: structValue.getFieldValue("protect_point_cost")!.asNumber(),
     result: structValue.getFieldValue("result")!.optionValue().valueOrUndefined((sc2) => sc2.vecValue().values().map((sc3) => fromScValuePlayerOutcome(sc3.structValue()))),
+  };
+}
+
+export interface GameSplitOrConquer {
+  discriminant: GameD.SplitOrConquer;
+  splitPoints: number;
+  result: Option<SplitOrConquerOutcome[]>;
+}
+
+export function newGameSplitOrConquer(splitPoints: number, result: Option<SplitOrConquerOutcome[]>): GameSplitOrConquer {
+  return {discriminant: 2, splitPoints, result, };
+}
+
+function fromScValueGameSplitOrConquer(structValue: ScValueStruct): GameSplitOrConquer {
+  return {
+    discriminant: GameD.SplitOrConquer,
+    splitPoints: structValue.getFieldValue("split_points")!.asNumber(),
+    result: structValue.getFieldValue("result")!.optionValue().valueOrUndefined((sc4) => sc4.vecValue().values().map((sc5) => fromScValueSplitOrConquerOutcome(sc5.structValue()))),
   };
 }
 
@@ -271,10 +422,10 @@ export function newContractState(administrator: BlockchainAddress, players: Bloc
 function fromScValueContractState(structValue: ScValueStruct): ContractState {
   return {
     administrator: BlockchainAddress.fromBuffer(structValue.getFieldValue("administrator")!.addressValue().value),
-    players: structValue.getFieldValue("players")!.vecValue().values().map((sc4) => BlockchainAddress.fromBuffer(sc4.addressValue().value)),
+    players: structValue.getFieldValue("players")!.vecValue().values().map((sc6) => BlockchainAddress.fromBuffer(sc6.addressValue().value)),
     currentGame: fromScValueCurrentGame(structValue.getFieldValue("current_game")!.structValue()),
-    games: structValue.getFieldValue("games")!.vecValue().values().map((sc5) => fromScValueGame(sc5.enumValue())),
-    points: structValue.getFieldValue("points")!.vecValue().values().map((sc6) => sc6.vecValue().values().map((sc7) => sc7.asNumber())),
+    games: structValue.getFieldValue("games")!.vecValue().values().map((sc7) => fromScValueGame(sc7.enumValue())),
+    points: structValue.getFieldValue("points")!.vecValue().values().map((sc8) => sc8.vecValue().values().map((sc9) => sc9.asNumber())),
   };
 }
 
@@ -327,9 +478,9 @@ function fromScValueExternalEventId(structValue: ScValueStruct): ExternalEventId
 
 export function initialize(games: GameSettings[]): Buffer {
   const fnBuilder = new FnRpcBuilder("initialize", fileAbi.contract);
-  const vecBuilder8 = fnBuilder.addVec();
-  for (const vecEntry9 of games) {
-    buildRpcGameSettings(vecEntry9, vecBuilder8);
+  const vecBuilder10 = fnBuilder.addVec();
+  for (const vecEntry11 of games) {
+    buildRpcGameSettings(vecEntry11, vecBuilder10);
   }
   return fnBuilder.getBytes();
 }
