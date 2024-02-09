@@ -1,3 +1,4 @@
+import { endGame } from '@/contracts_gen/clients/gamemaster';
 import { ChainAction } from '@/server/chain-actions/types';
 import {
   ContractAbi,
@@ -17,6 +18,14 @@ export class BaseActions {
     public readonly abi: ContractAbi,
     public readonly engineKeys: BlockchainPublicKey[],
   ) {}
+
+  public endGame(): ChainAction {
+    return {
+      contract: this.contract,
+      payload: endGame().toString('hex'),
+      payloadType: 'hex_payload',
+    };
+  }
 
   public actionWithHexPayload(payload: Buffer): ChainAction {
     return {

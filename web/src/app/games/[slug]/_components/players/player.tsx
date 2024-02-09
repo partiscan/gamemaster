@@ -33,7 +33,7 @@ export const Player: FC<Props> = ({ address, children, playerIndex }) => {
         <>
           <div className='absolute -top-5 left-[65%]'>
             <YouArrow className='z-10 h-16 w-10' />
-            <div className='absolute -right-3 top-6 font-semibold text-[#328421]'>
+            <div className='absolute -rotate-12 -right-3 top-6 font-semibold text-[#328421]'>
               You
             </div>
           </div>
