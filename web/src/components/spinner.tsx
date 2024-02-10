@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { FC } from 'react';
 
 type Props = { className?: string };
@@ -8,9 +8,9 @@ export const Spinner: FC<Props> = ({ className }) => {
     <div role='status'>
       <svg
         aria-hidden='true'
-        className={clsx(
-          className,
+        className={cn(
           'h-8 w-8 animate-spin fill-white text-transparent',
+          className,
         )}
         viewBox='0 0 100 101'
         fill='none'
