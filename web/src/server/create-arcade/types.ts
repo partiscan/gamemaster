@@ -1,4 +1,4 @@
-import { GUESS_THE_NUMBER, SABOTAGE } from '@/config';
+import { GUESS_THE_NUMBER, SABOTAGE, SPLIT_OR_CONQUER } from '@/config';
 
 type CommonGameSetting<T> = {
   settingId: string;
@@ -14,4 +14,8 @@ export type SabotageGameSetting = {
   protectCostPoints: number;
 } & CommonGameSetting<typeof SABOTAGE.id>;
 
-export type GameSetting = SabotageGameSetting | GuessTheNumberGameSetting;
+export type SplitOrConquerGameSetting = {
+  splitPoints: number;
+} & CommonGameSetting<typeof SPLIT_OR_CONQUER.id>;
+
+export type GameSetting = SabotageGameSetting | GuessTheNumberGameSetting | SplitOrConquerGameSetting;

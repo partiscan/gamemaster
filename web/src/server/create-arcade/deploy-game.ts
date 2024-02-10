@@ -18,8 +18,8 @@ const gamemasterAbi = fs.readFileSync(
   process.cwd() + '/src/contracts_gen/gamemaster/gamemaster.abi',
 );
 
-const MPC_DECIMALS = 4;
-const MPC_DECIMALS_MULTIPLIER = 10 ** MPC_DECIMALS;
+const GAS_DECIMALS = 4;
+const GAS_DECIMALS_MULTIPLIER = 10 ** GAS_DECIMALS;
 
 export const deployGame = async (): Promise<string> => {
   const gameMasterInit = getGameMasterInit();
@@ -29,7 +29,7 @@ export const deployGame = async (): Promise<string> => {
     gamemasterContract,
     gameMasterInit,
     gamemasterAbi,
-    new BN(2000 * MPC_DECIMALS_MULTIPLIER),
+    new BN(2000 * GAS_DECIMALS_MULTIPLIER),
     [],
     binderId,
   );
@@ -54,6 +54,13 @@ const getGameMasterInit = (): Buffer => {
         protectPointCost: setting.protectCostPoints,
         sabotagePoint: setting.sabotagePoints,
       };
+    }
+
+    if (setting.gameType === "split-or-conquer") {
+      return {
+        discriminant: GameSettingsD.SplitOrConquer,
+        splitPoints: setting.splitPoints,
+      }
     }
 
     throw new Error('Unknown game type');

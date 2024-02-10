@@ -3,11 +3,10 @@ import { ContractAbi } from '@partisiablockchain/abi-client';
 import { BlockchainPublicKey } from '@partisiablockchain/zk-client';
 import { BaseActions } from './base-actions';
 
-const PROTECT_ACTION = 0b0000_0000;
-const SABOTAGE_ACTION = 0b0100_0000;
-const PLAYER_BITS = 0b0011_1111;
+const SPLIT_ACTION = 0b0000_0001;
+const CONQUER_ACTION = 0b0000_0010;
 
-export class SabotageActions extends BaseActions {
+export class SplitOrConquerActions extends BaseActions {
   constructor(
     public readonly contract: string,
     address: string | null | undefined,
@@ -17,12 +16,8 @@ export class SabotageActions extends BaseActions {
     super(contract, address, abi, engineKeys);
   }
 
-  public inputAction(
-    playerIndex: number,
-    action: 'protect' | 'sabotage',
-  ): ChainAction {
-    const actionBit = action === 'protect' ? PROTECT_ACTION : SABOTAGE_ACTION;
-    const secret = actionBit | (playerIndex & PLAYER_BITS);
+  public inputAction(action: 'split' | 'conquer'): ChainAction {
+    const secret = action === 'split' ? SPLIT_ACTION : CONQUER_ACTION;
     const rpc = this.inputZkSecret('on_secret_input', secret);
     return this.actionWithHexPayload(rpc);
   }

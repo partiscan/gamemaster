@@ -13,6 +13,9 @@ const DEFAULTS = {
     SABOTAGE_POINTS: 50,
     PROTECTED_COST_POINTS: 10,
   },
+  SPLIT_OR_CONQUER: {
+    SPLIT_POINTS: 30,
+  },
 };
 
 const makeSetting = (game: Game): GameSetting => {
@@ -32,6 +35,14 @@ const makeSetting = (game: Game): GameSetting => {
       gameType: game.id,
       sabotagePoints: DEFAULTS.SABOTAGE.SABOTAGE_POINTS,
       protectCostPoints: DEFAULTS.SABOTAGE.PROTECTED_COST_POINTS,
+    };
+  }
+
+  if (game.id === 'split-or-conquer') {
+    return {
+      settingId,
+      gameType: game.id,
+      splitPoints: DEFAULTS.SPLIT_OR_CONQUER.SPLIT_POINTS,
     };
   }
 

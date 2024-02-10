@@ -1,21 +1,17 @@
-import {
-  ContractAbi,
-  FnRpcBuilder,
-  ZkInputBuilder,
-} from '@partisiablockchain/abi-client';
-import {
-  BlockchainAddress,
-  BlockchainPublicKey,
-  ZkRpcBuilder,
-} from '@partisiablockchain/zk-client';
-import { BaseActions } from './base-actions';
 import { guess as gamemasterGuess } from '@/contracts_gen/clients/gamemaster';
 import { ChainAction } from '@/server/chain-actions/types';
+import {
+  ContractAbi
+} from '@partisiablockchain/abi-client';
+import {
+  BlockchainPublicKey
+} from '@partisiablockchain/zk-client';
+import { BaseActions } from './base-actions';
 
 export class GuessTheNumberActions extends BaseActions {
   constructor(
     public readonly contract: string,
-    public readonly address: string | undefined | null,
+    address: string | undefined | null,
     public readonly abi: ContractAbi,
     public readonly engineKeys: BlockchainPublicKey[],
   ) {

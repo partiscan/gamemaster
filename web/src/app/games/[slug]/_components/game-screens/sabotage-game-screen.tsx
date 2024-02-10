@@ -26,8 +26,8 @@ export const SabotageGameScreen: FC<Props> = ({ game }) => {
   );
 
   return (
-    <div className='w-full max-w-screen-xl'>
-      <div className='grid gap-2 grid-cols-sabotage-players'>
+    <div className='mx-auto w-full max-w-screen-xl'>
+      <div className='grid grid-cols-sabotage-players gap-2'>
         {gameState.players.map((player, i) => (
           <ChainActionButton
             key={player}
@@ -45,7 +45,7 @@ export const SabotageGameScreen: FC<Props> = ({ game }) => {
             }
             disableLoading
           >
-            <Player address={player} playerIndex={i}>
+            <Player playerIndex={i}>
               <div className='absolute -right-7 top-0'>
                 {game.result?.[i]?.sabotage === true && (
                   <SwordIcon className='h-6 w-6 fill-red-400 text-red-800' />

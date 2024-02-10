@@ -19,5 +19,13 @@ export const GamePoints: FC<Props> = ({ game }) => {
     );
   }
 
+  if (game.kind === 'split-or-conquer') {
+    return (
+      <>
+        <div>Points at stake: {game.splitPoints * 2}</div>
+      </>
+    );
+  }
+
   return null;
 };

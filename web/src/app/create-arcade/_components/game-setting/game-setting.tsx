@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { FC } from 'react';
 import { GuessTheNumberGameSetting } from './guess-the-number-game-setting';
 import { SabotageGameSetting } from './sabotage-game-setting';
+import { SplitOrConquerGameSetting } from './split-or-conquer-game-setting';
 
 type Props = {
   setting: GameSettingType;
@@ -32,7 +33,7 @@ export const GameSetting: FC<Props> = ({ setting }) => {
           width={128}
           height={128}
         />
-        <div className='gap-2 flex flex-col'>
+        <div className='flex flex-col gap-2'>
           <CardTitle>{game.title}</CardTitle>
           <CardDescription>{game.description}</CardDescription>
         </div>
@@ -44,6 +45,9 @@ export const GameSetting: FC<Props> = ({ setting }) => {
         )}
         {setting.gameType === 'guess-the-number' && (
           <GuessTheNumberGameSetting setting={setting} />
+        )}
+        {setting.gameType === 'split-or-conquer' && (
+          <SplitOrConquerGameSetting setting={setting} />
         )}
       </CardContent>
 

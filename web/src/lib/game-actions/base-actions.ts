@@ -11,13 +11,20 @@ import {
   ZkRpcBuilder,
 } from '@partisiablockchain/zk-client';
 
+// If there is no address, we can just default to the 00 one
+const DEFAULT_ADDRESS = Array(21).fill('00').join('');
+
 export class BaseActions {
+  public readonly address: string;
+
   constructor(
     public readonly contract: string,
-    public readonly address: string | null | undefined,
+    address: string | null | undefined,
     public readonly abi: ContractAbi,
     public readonly engineKeys: BlockchainPublicKey[],
-  ) {}
+  ) {
+    this.address = address ?? DEFAULT_ADDRESS;
+  }
 
   public endGame(): ChainAction {
     return {
@@ -36,10 +43,6 @@ export class BaseActions {
   }
 
   public inputZkSecret(method: string, secret: number): Buffer {
-    if (!this.address) {
-      throw new Error('cant do actions without an address');
-    }
-
     const fnBuilder = new FnRpcBuilder(method, this.abi);
     const additionalRpc = fnBuilder.getBytes();
 
@@ -51,7 +54,7 @@ export class BaseActions {
     const compactBitArray = secretInputBuilder.getBits();
 
     return ZkRpcBuilder.zkInputOnChain(
-      BlockchainAddress.fromString(this.address!),
+      BlockchainAddress.fromString(this.address),
       compactBitArray,
       additionalRpc,
       this.engineKeys,

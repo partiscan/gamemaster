@@ -2,6 +2,7 @@ import {
   GameD,
   GameStatusD,
   PlayerOutcome,
+  SplitOrConquerOutcome,
   deserializeContractState,
 } from '@/contracts_gen/clients/gamemaster';
 import { getContractState } from '../partisia.client';
@@ -20,6 +21,12 @@ export type SabotageGame = {
   result: PlayerOutcome[] | undefined | null;
 };
 
+export type SplitOrConquerGame = {
+  kind: 'split-or-conquer';
+  splitPoints: number;
+  result: SplitOrConquerOutcome[] | undefined | null;
+}
+
 export type GameState = {
   administrator: string;
   players: string[];
@@ -27,7 +34,7 @@ export type GameState = {
     index: number;
     status: 'not-started' | 'in-progress' | 'finished';
   };
-  games: Array<GuessTheNumberGame | SabotageGame>;
+  games: Array<GuessTheNumberGame | SabotageGame | SplitOrConquerGame>;
   points: Array<Array<number>>;
   engineKeys: string[];
 };
@@ -68,6 +75,12 @@ export const getGameState = async (id: string): Promise<GameState | null> => {
             protectPointCost: game.protectPointCost,
             result: game.result,
           };
+        } else if (game.discriminant === GameD.SplitOrConquer) {
+          return {
+            kind: 'split-or-conquer',
+            splitPoints: game.splitPoints,
+            result: game.result,
+          }
         }
 
         throw new Error('Unknown game kind ' + game);
@@ -93,7 +106,7 @@ function toGameStatus(
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 2,
+    index: 0,
     status: 'in-progress',
   },
   players: [
@@ -109,10 +122,9 @@ const getTestState = (): GameState => ({
   ],
   games: [
     {
-      kind: 'sabotage',
-      protectPointCost: 0,
-      result: [{ sabotage: true, protect: true }],
-      sabotagePoint: 0,
+      kind: 'split-or-conquer',
+      splitPoints: 0,
+      result: undefined,
     },
     {
       kind: 'guess-the-number',

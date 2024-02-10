@@ -25,7 +25,7 @@ export const PlayerGrid = () => {
       <h3 className='font-medium'>Players</h3>
       <div className='grid grid-cols-sabotage-players gap-2'>
         {gameState.players.map((player, i) => (
-          <Player key={player} address={player} playerIndex={i} />
+          <Player key={player} playerIndex={i} />
         ))}
       </div>
     </div>

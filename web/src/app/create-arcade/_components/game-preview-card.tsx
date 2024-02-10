@@ -28,7 +28,7 @@ export const GamePreviewCard: FC<Props> = ({ game, onClick }) => {
         />
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CardDescription className='group-hover:text-muted'>
+          <CardDescription className='group-hover:text-muted text-xs'>
             {description}
           </CardDescription>
         </CardHeader>
