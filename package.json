@@ -6,5 +6,8 @@
 		"gamemaster": "pnpm gamemaster:build && pnpm gamemaster:copy && pnpm gamemaster:abi-client",
 		"zk-client:generate": "cargo partisia-contract abi codegen --ts abis/zk-contract.abi ./web/src/contracts_gen/clients/zk.ts",
 		"generate": "pnpm gamemaster && pnpm zk-client:generate"
+	},
+	"dependencies": {
+		"@vercel/analytics": "^1.1.3"
 	}
 }
