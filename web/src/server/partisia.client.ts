@@ -81,9 +81,6 @@ export const getContractState = async <T = string>(
   const response = await fetch(
     `${READER_URL}/shards/Shard${shard}/blockchain/contracts/${contract}?requireContractState=true`,
     {
-      next: {
-        revalidate: 0,
-      },
       cache: 'no-store',
     },
   );
