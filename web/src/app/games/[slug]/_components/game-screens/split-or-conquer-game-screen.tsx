@@ -19,10 +19,6 @@ export const SplitOrConquerGameScreen: FC<Props> = ({ game }) => {
 
   const actions = useSplitOrConquerActions();
 
-  const currentPlayer = gameState.players.findIndex(
-    (player) => player === address,
-  );
-
   const pairs = chunks(
     gameState.players.map((_, i) => i),
     2,
@@ -32,9 +28,17 @@ export const SplitOrConquerGameScreen: FC<Props> = ({ game }) => {
     return <PlayerGrid />;
   }
 
+  const currentPlayer = gameState.players.findIndex(
+    (player) => player === address,
+  );
+
+  const canPerformAction =
+    currentPlayer >= 0 &&
+    !gameState.secretVariablesOwners.includes(gameState.players[currentPlayer]);
+
   return (
     <div>
-      {currentPlayer >= 0 && (
+      {canPerformAction && (
         <div className='mb-8 flex items-center justify-center gap-5'>
           <ChainActionButton action={actions.inputAction('split')}>
             Split
