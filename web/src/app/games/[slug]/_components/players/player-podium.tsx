@@ -1,7 +1,9 @@
 'use client';
 
 import { useGameState } from '@/components/context/game-state.context';
+import confetti from 'canvas-confetti';
 import Image from 'next/image';
+import { useLayoutEffect } from 'react';
 import { Player } from './player';
 
 export const PlayerProdium = () => {
@@ -9,6 +11,12 @@ export const PlayerProdium = () => {
     gameState: { players, points },
     isGameEnded,
   } = useGameState();
+
+  useLayoutEffect(() => {
+    if (isGameEnded) {
+      confetti();
+    }
+  }, [isGameEnded]);
 
   if (!isGameEnded) return null;
 
@@ -26,8 +34,8 @@ export const PlayerProdium = () => {
 
   return (
     <div className='mx-auto mt-4 w-full max-w-screen-xl'>
-      <h3 className='text-xl font-medium mb-4'>Winners!</h3>
-      <div className='relative h-40 w-60 mx-auto'>
+      <h3 className='mb-4 text-xl font-medium'>Winners!</h3>
+      <div className='relative mx-auto h-40 w-60'>
         {first && <Player playerIndex={first.index} hidePoints />}
         {second && (
           <Player

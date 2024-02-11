@@ -2,7 +2,7 @@
 
 import { PartisiaWallet } from '@/components/wallet/wallet-identity';
 import { fetchIdentity } from '@/server/user/cookie-auth';
-import PartisiaSdk from 'partisia-sdk';
+import PartisiaSdk from 'partisia-blockchain-applications-sdk';
 
 export const getPartisiaSdk = ({ wallet, seed }: PartisiaWallet) =>
   new PartisiaSdk({

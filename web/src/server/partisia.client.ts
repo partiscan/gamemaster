@@ -1,5 +1,5 @@
 import { StateBytes } from '@partisiablockchain/abi-client';
-import { partisiaCrypto } from 'partisia-crypto';
+import { partisiaCrypto } from 'partisia-blockchain-applications-crypto';
 import { ChainAction } from './chain-actions/types';
 
 export type ContractType = 'PUBLIC' | 'ZERO_KNOWLEDGE';

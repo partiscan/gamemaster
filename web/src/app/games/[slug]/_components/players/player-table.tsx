@@ -2,7 +2,7 @@ import { useGameState } from '@/components/context/game-state.context';
 import { cn } from '@/lib/utils';
 import { CheckCircle2Icon } from 'lucide-react';
 import Image from 'next/image';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { Player } from './player';
 
 type Props = {
@@ -17,9 +17,8 @@ export const PlayerTable: FC<Props> = ({ players }) => {
   return (
     <div className='relative h-36 w-48'>
       {players.map((player, i) => (
-        <>
+        <Fragment key={player}>
           <Player
-            key={player}
             className={cn('absolute', {
               'left-7 top-2 ': i === 0,
               'right-7 top-2 ': i === 1,
@@ -42,7 +41,7 @@ export const PlayerTable: FC<Props> = ({ players }) => {
               )}
             />
           )}
-        </>
+        </Fragment>
       ))}
       <div className='absolute bottom-0 left-1/2 z-10 h-24 w-24 -translate-x-1/2 transform'>
         <Image src={`/assets/table.webp`} alt={''} fill />

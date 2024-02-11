@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import PartisiaSdk from 'partisia-sdk';
+import PartisiaSdk from 'partisia-blockchain-applications-sdk';
 import { FC, useState } from 'react';
 import { login } from '../../server/user/auth';
 import { Button } from '../ui/button';

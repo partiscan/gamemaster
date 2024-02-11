@@ -35,9 +35,15 @@ dependencies:
   '@secata-public/bitmanipulation-ts':
     specifier: ^3.0.6
     version: 3.0.6
+  '@vercel/analytics':
+    specifier: ^1.1.3
+    version: 1.1.3
   bn.js:
     specifier: ^5.2.1
     version: 5.2.1
+  canvas-confetti:
+    specifier: ^1.9.2
+    version: 1.9.2
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -56,12 +62,12 @@ dependencies:
   next:
     specifier: 14.1.0
     version: 14.1.0(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
-  partisia-crypto:
-    specifier: ^1.0.19
-    version: 1.0.19
-  partisia-sdk:
-    specifier: 0.1.1-1
-    version: 0.1.1-1(@types/node@20.10.5)
+  partisia-blockchain-applications-crypto:
+    specifier: ^1.0.22
+    version: 1.0.22
+  partisia-blockchain-applications-sdk:
+    specifier: ^0.1.2
+    version: 0.1.2(@types/node@20.10.5)
   react:
     specifier: ^18
     version: 18.2.0
@@ -88,6 +94,9 @@ devDependencies:
   '@types/bn.js':
     specifier: ^5.1.5
     version: 5.1.5
+  '@types/canvas-confetti':
+    specifier: ^1.6.4
+    version: 1.6.4
   '@types/node':
     specifier: ^20
     version: 20.10.5
@@ -2587,10 +2596,18 @@ packages:
       '@babel/types': 7.23.6
     dev: false
 
+  /@types/big.js@6.2.2:
+    resolution: {integrity: sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==}
+    dev: false
+
   /@types/bn.js@5.1.5:
     resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
     dependencies:
       '@types/node': 20.10.5
+
+  /@types/canvas-confetti@1.6.4:
+    resolution: {integrity: sha512-fNyZ/Fdw/Y92X0vv7B+BD6ysHL4xVU5dJcgzgxLdGbn8O3PezZNIJpml44lKM0nsGur+o/6+NZbZeNTt00U1uA==}
+    dev: true
 
   /@types/elliptic@6.4.18:
     resolution: {integrity: sha512-UseG6H5vjRiNpQvrhy4VF/JXdA3V/Fp5amvveaL+fs28BZ6xIKJBPnUPRlEaZpysD9MbpfaLi8lbl7PGUAkpWw==}
@@ -2850,6 +2867,12 @@ packages:
 
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
+
+  /@vercel/analytics@1.1.3:
+    resolution: {integrity: sha512-Z0l0y8TnUnnxr+on7oIMB9qQOoSJIniYMzUng6+NU8VVDkZ+kt2QGD5hzODwsuiRJAsjW528iUEtbWCEGkSCCg==}
+    dependencies:
+      server-only: 0.0.1
+    dev: false
 
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
@@ -3176,14 +3199,6 @@ packages:
   /axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
-
-  /axios@0.21.4:
-    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
-    dependencies:
-      follow-redirects: 1.15.5
-    transitivePeerDependencies:
-      - debug
-    dev: false
 
   /axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -3602,6 +3617,10 @@ packages:
     resolution: {integrity: sha512-u5AUVkixruKHJjw/pj9wISlcMpgFWzSrczLZbrqBSxukQixmg0SJ5sZTpvaFvxU0HoQKd4yoyAogyrAz9pzJnA==}
     dev: false
 
+  /canvas-confetti@1.9.2:
+    resolution: {integrity: sha512-6Xi7aHHzKwxZsem4mCKoqP6YwUG3HamaHHAlz1hTNQPCqXhARFpSXnkC9TWlahHY5CG6hSL5XexNjxK8irVErg==}
+    dev: false
+
   /capture-exit@2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -3873,8 +3892,8 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  /crypto-js@3.3.0:
-    resolution: {integrity: sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==}
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
     dev: false
 
   /cssesc@3.0.0:
@@ -5031,16 +5050,6 @@ packages:
 
   /flatted@3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
-
-  /follow-redirects@1.15.5:
-    resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -6719,13 +6728,13 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  /merkletreejs@0.2.32:
-    resolution: {integrity: sha512-TostQBiwYRIwSE5++jGmacu3ODcKAgqb0Y/pnIohXS7sWxh1gCkSptbmF1a43faehRDpcHf7J/kv0Ml2D/zblQ==}
+  /merkletreejs@0.3.11:
+    resolution: {integrity: sha512-LJKTl4iVNTndhL+3Uz/tfkjD0klIWsHlUzgtuNnNrsf7bAlXR30m+xYB7lHr5Z/l6e/yAIsr26Dabx6Buo4VGQ==}
     engines: {node: '>= 7.6.0'}
     dependencies:
       bignumber.js: 9.1.2
       buffer-reverse: 1.0.1
-      crypto-js: 3.3.0
+      crypto-js: 4.2.0
       treeify: 1.1.0
       web3-utils: 1.10.3
     dev: false
@@ -7229,39 +7238,28 @@ packages:
     resolution: {integrity: sha512-fxNG2sQjHvlVAYmzBZS9YlDp6PTSSDwa98vkD4QgVDDCAo84z5X1t5XyJQ62ImdLXx5NdIIfihey6xpum9/gRQ==}
     dev: false
 
-  /partisia-crypto@1.0.19:
-    resolution: {integrity: sha512-ghp7qwObN4yZjtHvE+SY/zhGz722YkFWa8Pt85kNtN4nzLoVGSGK76JZ4VucgrzWuywboWa69woimVh2WxfWsA==}
+  /partisia-blockchain-applications-crypto@1.0.22:
+    resolution: {integrity: sha512-VgGxZ1GWLy6JUx/QqeYIHV5H0KLhXZ4pNpeYbDRaXI7yoVK0DNpQLge9IIBCSMqfvfmw850d0sIEjokONDXwMw==}
     engines: {node: '>=16.20.0'}
-    deprecated: This version is no longer supported. It has been replaced by partisia-blockchain-applications-crypto.
     dependencies:
+      '@types/big.js': 6.2.2
       big.js: 6.2.1
       bip32: 2.0.6
       bip39: 3.1.0
       elliptic: 6.5.4
-      merkletreejs: 0.2.32
+      js-sha3: 0.8.0
+      merkletreejs: 0.3.11
       noble-bls12-381: 0.15.0
-      partisia-rpc: 1.0.9
-    transitivePeerDependencies:
-      - debug
+      zxcvbn: 4.4.2
     dev: false
 
-  /partisia-rpc@1.0.9:
-    resolution: {integrity: sha512-uwtbwIXOF46N9NnujWkphpM4aj8WfrqnPPSKAKKE8Ecfc/bVnpO3m7W63G0kvQ/jHnSpJWD8VkOucoS5nvq47Q==}
-    deprecated: This version is no longer supported. Please upgrade to partisia-blockchain-applications-rpc
-    dependencies:
-      axios: 0.21.4
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /partisia-sdk@0.1.1-1(@types/node@20.10.5):
-    resolution: {integrity: sha512-SbNj46TOrgQrPj/+xH9sPu+p3n9vtP1mrGmVAAkCXhtq9gtNcSuTEyNLDoVktr23pc5oDRteDe/Tazv8AweZHQ==}
+  /partisia-blockchain-applications-sdk@0.1.2(@types/node@20.10.5):
+    resolution: {integrity: sha512-o7KKS6wZi5CnQK+b+531zYHYuLXNDla0TSe7cgZspocWuq/uzzizvoHvAbmoDiuDtniO7X0AWcsAudEoeUspOw==}
     engines: {node: '>=16.20.0'}
-    deprecated: deprecated, please use partisia-blockchain-applications-sdk
     dependencies:
       bson: 4.7.2
       jsend: 1.1.0
-      partisia-crypto: 1.0.19
+      partisia-blockchain-applications-crypto: 1.0.22
       tsdx: 0.14.1(@types/node@20.10.5)
     optionalDependencies:
       fsevents: 2.3.3
@@ -7270,7 +7268,6 @@ packages:
       - '@types/node'
       - bufferutil
       - canvas
-      - debug
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
@@ -8133,6 +8130,10 @@ packages:
     resolution: {integrity: sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==}
     dependencies:
       randombytes: 2.1.0
+    dev: false
+
+  /server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
     dev: false
 
   /set-blocking@2.0.0:
@@ -9482,4 +9483,8 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
+
+  /zxcvbn@4.4.2:
+    resolution: {integrity: sha512-Bq0B+ixT/DMyG8kgX2xWcI5jUvCwqrMxSFam7m0lAf78nf04hv6lNCsyLYdyYTrCVMqNDY/206K7eExYCeSyUQ==}
     dev: false
