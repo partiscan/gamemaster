@@ -2,6 +2,8 @@ package examples.games;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 
 import com.partisiablockchain.language.abicodegen.Gamemaster;
@@ -59,6 +61,7 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
     Game.Sabotage game = assertCurrentGameType(Game.Sabotage.class);
 
     assertThat(game.result().get(0).sabotage()).isTrue();
+    assertThat(state.points().get(0)).isEqualTo(List.of(-50, 0, 0));
   }
 
   @ContractTest(previous = "deployZkContract")
@@ -77,6 +80,27 @@ public final class ZkSabotageTest extends GamemasterJunitContractTest {
 
     assertThat(game.result().get(0).sabotage()).isFalse();
     assertThat(game.result().get(0).protect()).isTrue();
+    assertThat(state.points().get(0)).isEqualTo(List.of(-10, 0, 0));
+  }
+
+  @ContractTest(previous = "deployZkContract")
+  public void gameWithProtectAndSabotage() {
+    nextGame();
+
+    sendSabotageAction(account1, 0, false);
+    sendSabotageAction(account1, 0, true);
+
+    endGame();
+
+    Gamemaster.ContractState state = getState();
+
+    assertThat(state.currentGame()).isEqualTo(new Gamemaster.CurrentGame(0, new GameStatus.Finished()));
+
+    Game.Sabotage game = assertCurrentGameType(Game.Sabotage.class);
+
+    assertThat(game.result().get(0).sabotage()).isTrue();
+    assertThat(game.result().get(0).protect()).isTrue();
+    assertThat(state.points().get(0)).isEqualTo(List.of(-10, 0, 0));
   }
 
 }

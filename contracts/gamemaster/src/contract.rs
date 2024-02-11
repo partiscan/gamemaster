@@ -503,10 +503,10 @@ fn calculate_sabotage_points(
             let mut local_point = 0;
             if let Some(result) = result {
                 let local_result = result.get(i).unwrap();
-                if local_result.sabotage {
-                    local_point -= sabotage_points as i32;
-                } else if local_result.protect {
+                if local_result.protect {
                     local_point -= protect_point_cost as i32;
+                } else if local_result.sabotage {
+                    local_point -= sabotage_points as i32;
                 }
             }
             local_point
