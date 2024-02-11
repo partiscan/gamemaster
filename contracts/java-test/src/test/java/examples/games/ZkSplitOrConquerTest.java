@@ -2,7 +2,6 @@ package examples.games;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -92,11 +91,10 @@ public final class ZkSplitOrConquerTest extends GamemasterJunitContractTest {
             new SplitDecision.Split()));
 
     assertThat(getState().points().size()).isEqualTo(1);
-    assertThat(getState().points().get(0)).isEqualTo(Arrays.asList(
+    assertThat(getState().points().get(0)).isEqualTo(List.of(
         10, 10, 10));
   }
 
-  
   @ContractTest(previous = "deployZkContract")
   public void playerAConquers() {
     signUp(account4);
@@ -135,7 +133,7 @@ public final class ZkSplitOrConquerTest extends GamemasterJunitContractTest {
             new SplitDecision.Conquer()));
 
     assertThat(getState().points().size()).isEqualTo(1);
-    assertThat(getState().points().get(0)).isEqualTo(Arrays.asList(
+    assertThat(getState().points().get(0)).isEqualTo(List.of(
         20, 0, 0, 20));
   }
 }

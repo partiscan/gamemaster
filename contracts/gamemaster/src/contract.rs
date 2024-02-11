@@ -114,7 +114,7 @@ fn next_game(
     context: ContractContext,
     mut state: ContractState,
     zk_state: ZkState<SecretVarType>,
-) -> (ContractState, Vec<EventGroup>) {
+) -> (ContractState, Vec<EventGroup>, Vec<ZkStateChange>) {
     if !is_game_started(&state) {
         assert!(state.players.len() >= 2, "Not enough players");
         assert!(!state.games.is_empty(), "No games available");
@@ -124,7 +124,7 @@ fn next_game(
         );
 
         state.current_game.status = GameStatus::InProgress {};
-        return (state, vec![]);
+        return (state, vec![], vec![]);
     }
 
     state.current_game.index += 1;
@@ -140,7 +140,13 @@ fn next_game(
         }
     };
 
-    (state, vec![])
+    let variables_to_delete = zk_state.secret_variables.iter().map(|(k, _)| k).collect();
+
+    let delete_variables_state_change = ZkStateChange::DeleteVariables {
+        variables_to_delete
+    };
+
+    (state, vec![], vec![delete_variables_state_change])
 }
 
 #[action(shortname = 0x02, zk = true)]
@@ -446,8 +452,8 @@ fn calculate_split_or_conquer_points(
                             return vec![split_points_i32, split_points_i32];
                         }
                         SplitDecision::NoAction {} => {
-                            // Player A is splitting and B had no action, so player A gets all the points.
-                            return vec![split_points_i32 * 2, 0];
+                            // Player A is splitting and B had no action, so only player A gets points.
+                            return vec![split_points_i32, 0];
                         }
                     }
                 }
@@ -458,7 +464,7 @@ fn calculate_split_or_conquer_points(
                             return vec![0, 0];
                         }
                         SplitDecision::Split {} => {
-                            return vec![0, split_points_i32 * 2];
+                            return vec![0, split_points_i32];
                         }
                         SplitDecision::Conquer {} => {
                             return vec![0, split_points_i32 * 2];

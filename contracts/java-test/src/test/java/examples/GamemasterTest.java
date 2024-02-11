@@ -39,4 +39,32 @@ public final class GamemasterTest extends GamemasterJunitContractTest {
     assertThat(points.get(0)).isEqualTo(List.of(0, -10, -50));
     assertThat(points.get(1)).isEqualTo(List.of(0, 0, -50));
   }
+
+  @ContractTest
+  public void deployAndPlayer() {
+    deployGamemasterContract(new GameSettings.GuessTheNumberGame(100),
+        new GameSettings.SplitOrConquer((short) 30),
+        new GameSettings.Sabotage(50, 10));
+
+    sendSecretNumberAction(account1, 100);
+
+    guess(account2, 100);
+
+    nextGame();
+
+    sendSecretSplitOrConquerAction(account2, true);
+    sendSecretSplitOrConquerAction(account3, true);
+
+    endGame();
+
+    ContractState state = getState();
+
+    assertThat(state.currentGame().index()).isEqualTo(1);
+    assertThat(state.currentGame().status()).isEqualTo(new GameStatus.Finished());
+
+    List<List<Integer>> points = state.points();
+    assertThat(points.size()).isEqualTo(2);
+    assertThat(points.get(0)).isEqualTo(List.of(0, 100, 0));
+    assertThat(points.get(1)).isEqualTo(List.of(0, 130, 30));
+  }
 }
