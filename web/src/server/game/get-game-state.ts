@@ -25,7 +25,7 @@ export type SplitOrConquerGame = {
   kind: 'split-or-conquer';
   splitPoints: number;
   result: SplitOrConquerOutcome[] | undefined | null;
-}
+};
 
 export type GameState = {
   administrator: string;
@@ -37,6 +37,7 @@ export type GameState = {
   games: Array<GuessTheNumberGame | SabotageGame | SplitOrConquerGame>;
   points: Array<Array<number>>;
   engineKeys: string[];
+  secretVariablesOwners: string[];
 };
 
 export const getGameState = async (id: string): Promise<GameState | null> => {
@@ -49,8 +50,11 @@ export const getGameState = async (id: string): Promise<GameState | null> => {
       throw new Error('Invalid contract type');
     }
 
+    console.dir(contractState, { depth: 20 });
     const state = contractState.serializedContract.openState.openState.data;
+    const { variables } = contractState.serializedContract;
     return {
+      secretVariablesOwners: variables.map((v) => v.value.owner),
       administrator: state.administrator.asString(),
       currentGame: {
         index: state.currentGame.index,
@@ -80,7 +84,7 @@ export const getGameState = async (id: string): Promise<GameState | null> => {
             kind: 'split-or-conquer',
             splitPoints: game.splitPoints,
             result: game.result,
-          }
+          };
         }
 
         throw new Error('Unknown game kind ' + game);
@@ -106,8 +110,8 @@ function toGameStatus(
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 3,
-    status: 'finished',
+    index: 0,
+    status: 'in-progress',
   },
   players: [
     '00527092bfb4b35a0331fe066199a41d45c213c368',
@@ -149,5 +153,9 @@ const getTestState = (): GameState => ({
     'Ax3kZlMV9JW6EE/74YO9X8Y7zVeD8TubNlBaY+IMfARg',
     'Ax3kZlMV9JW6EE/74YO9X8Y7zVeD8TubNlBaY+IMfARg',
     'Ax3kZlMV9JW6EE/74YO9X8Y7zVeD8TubNlBaY+IMfARg',
+  ],
+  secretVariablesOwners: [
+    '00527092bfb4b35a0331fe066199a41d45c213c368',
+    '00527092bfb4b35a0331fe066199a41d45c213c367',
   ],
 });

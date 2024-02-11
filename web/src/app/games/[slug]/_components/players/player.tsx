@@ -78,7 +78,7 @@ export const Player: FC<Props> = ({
           </div>
         </div>
       )}
-      <div className={cn('absolute right-3 top-0', { ['top-6']: isYou })}>
+      <div className={cn('absolute right-3 top-0 z-30', { ['top-6']: isYou })}>
         {children}
       </div>
     </div>

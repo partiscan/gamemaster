@@ -1,31 +1,50 @@
+import { useGameState } from '@/components/context/game-state.context';
+import { cn } from '@/lib/utils';
+import { CheckCircle2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Player } from './player';
-import { cn } from '@/lib/utils';
 
 type Props = {
   players: number[];
 };
 
 export const PlayerTable: FC<Props> = ({ players }) => {
+  const {
+    gameState: { secretVariablesOwners, players: playerAddresses },
+  } = useGameState();
+
   return (
-    <div className='relative h-48 w-48'>
+    <div className='relative h-36 w-48'>
       {players.map((player, i) => (
-        <Player
-          key={player}
-          className={cn('absolute', {
-            'left-7 top-2 ': i === 0,
-            'right-7 top-2 ': i === 1,
-          })}
-          imageClassName={cn('z-10', {
-            'skew-x-[10deg] skew-y-[-28deg]': i === 0,
-            'skew-x-[-10deg] skew-y-[28deg]': i === 1,
-          })}
-          playerIndex={player}
-          hidePoints
-        />
+        <>
+          <Player
+            key={player}
+            className={cn('absolute', {
+              'left-7 top-2 ': i === 0,
+              'right-7 top-2 ': i === 1,
+            })}
+            imageClassName={cn('z-10', {
+              'skew-x-[10deg] skew-y-[-28deg]': i === 0,
+              'skew-x-[-10deg] skew-y-[28deg]': i === 1,
+            })}
+            playerIndex={player}
+            hidePoints
+          />
+          {secretVariablesOwners.some((p) => p === playerAddresses[player]) && (
+            <CheckCircle2Icon
+              className={cn(
+                'absolute bottom-16 z-40 w-6 fill-green-200 text-green-800',
+                {
+                  'left-16': i === 0,
+                  'right-16': i === 1,
+                },
+              )}
+            />
+          )}
+        </>
       ))}
-      <div className='absolute left-1/2 top-1/2 z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 transform'>
+      <div className='absolute bottom-0 left-1/2 z-10 h-24 w-24 -translate-x-1/2 transform'>
         <Image src={`/assets/table.webp`} alt={''} fill />
       </div>
     </div>

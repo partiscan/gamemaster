@@ -19,6 +19,19 @@ type ZkEngine = {
   restInterface: string;
 };
 
+type WithKey<T> = { key: number; value: T };
+
+type SecretVariable = {
+  id: number;
+  information: { data: string };
+  inputMaskOffset: number;
+  maskedInputShare: { data: string };
+  owner: string;
+  sealed: boolean;
+  shareBitLengths: number[];
+  transaction: string;
+};
+
 type ZkStateWrapper<State> = {
   attestations: [];
   calculationStatus: 'WAITING';
@@ -39,7 +52,7 @@ type ZkStateWrapper<State> = {
   pendingOnChainOpen: [];
   preProcessMaterials: [];
   preprocessContract: string;
-  variables: [];
+  variables: Array<WithKey<SecretVariable>>;
   zkComputationDeadline: string;
 };
 
