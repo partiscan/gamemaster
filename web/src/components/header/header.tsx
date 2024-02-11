@@ -16,12 +16,15 @@ export const Header: FC = async () => {
             className='flex items-center gap-2 text-2xl font-semibold'
             href='/'
           >
-            <GamemasterLogo className='text-blue stroke-red w-14 bg-primary fill-primary-foreground ' />
-            <span className='hidden md:block'>Gamemaster</span>
+            <GamemasterLogo className='w-14 bg-primary fill-primary-foreground' />
+            <div className='hidden md:block'>
+              Gamemaster
+            </div>
+
+            <span className='text-xs text-muted-foreground text-red-800'>(testnet)</span>
           </Link>
         </div>
-        <div className='flex items-center gap-4 text-sm mx-auto'>
-        </div>
+        <div className='mx-auto flex items-center gap-4 text-sm'></div>
         <div className='justify-self-end'>
           <Suspense
             fallback={

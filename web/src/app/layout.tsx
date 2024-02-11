@@ -28,6 +28,14 @@ export default function RootLayout({
         inter.variable,
       )}
     >
+      <head>
+        <link
+          rel='icon'
+          type='image/svg+xml'
+          href='/assets/favicon/favicon.svg'
+        />
+        <link rel='icon' type='image/png' href='/assets/favicon/favicon.png' />
+      </head>
       <body>
         <Header />
         <main className='p-4 xl:p-12 2xl:px-24'>{children}</main>
