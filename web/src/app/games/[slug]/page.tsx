@@ -7,6 +7,7 @@ import { GameRules } from './_components/game-rules';
 import { GameStatus } from './_components/game-status';
 import { GamesOverview } from './_components/games-overview';
 import { MainGameScreen } from './_components/main-game-screen';
+import { PlayerProdium } from './_components/players/player-podium';
 
 type PageProps = {
   params: { slug: string };
@@ -29,6 +30,7 @@ const GamePage = async ({ params }: PageProps) => {
             <GamesOverview />
             <GameRules />
             <GameStatus />
+            <PlayerProdium />
             <NextGameButton />
             <MainGameScreen />
           </div>

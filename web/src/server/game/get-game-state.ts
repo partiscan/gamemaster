@@ -106,8 +106,8 @@ function toGameStatus(
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 0,
-    status: 'in-progress',
+    index: 3,
+    status: 'finished',
   },
   players: [
     '00527092bfb4b35a0331fe066199a41d45c213c368',
