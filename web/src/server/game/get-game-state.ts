@@ -50,7 +50,6 @@ export const getGameState = async (id: string): Promise<GameState | null> => {
       throw new Error('Invalid contract type');
     }
 
-    console.dir(contractState, { depth: 20 });
     const state = contractState.serializedContract.openState.openState.data;
     const { variables } = contractState.serializedContract;
     return {

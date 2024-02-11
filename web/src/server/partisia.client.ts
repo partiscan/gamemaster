@@ -82,8 +82,9 @@ export const getContractState = async <T = string>(
     `${READER_URL}/shards/Shard${shard}/blockchain/contracts/${contract}?requireContractState=true`,
     {
       next: {
-        revalidate: 30,
+        revalidate: 0,
       },
+      cache: 'no-store',
     },
   );
   if (!response.ok) throw new Error('Unable to find game');

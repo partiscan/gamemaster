@@ -20,7 +20,7 @@ export class SplitOrConquerActions extends BaseActions {
     const secret = action === 'split' ? SPLIT_ACTION : CONQUER_ACTION;
     const rpc = this.inputZkSecret('on_secret_input', secret);
     return this.actionWithHexPayload(rpc, {
-      cost: 28_550,
+      cost: 30_000,
     });
   }
 }

@@ -59,8 +59,8 @@ export const GuessTheNumberGameScreen: FC<Props> = ({ game }) => {
       )}
       {gameIsFinished && (
         <div>
-          {game.winner && <div className='w-fit mx-auto'>Winner! <Player playerIndex={game.winner} /></div>}
-          {!game.winner && <div>There was no winner!</div>}
+          {game.winner !== undefined && <div className='w-fit mx-auto'>Winner! <Player playerIndex={game.winner} /></div>}
+          {game.winner === undefined && <div>There was no winner!</div>}
         </div>
       )}
 
