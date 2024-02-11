@@ -20,11 +20,13 @@ import {
 } from './ui/dialog';
 import { ConnectWallet } from './wallet/connect-wallet';
 
+type MaybePromise<T> = T | Promise<T> | PromiseLike<T>;
+
 type Props = PropsWithChildren<
   ComponentProps<typeof SpinnerButton> & {
-    action: ChainAction | (() => ChainAction) | (() => Promise<ChainAction>);
+    action: MaybePromise<ChainAction> | (() => MaybePromise<ChainAction>);
     revalidatePath?: string;
-    onSuccess?: () => void;
+    onSuccess?: (txHash: string) => void;
     disableLoading?: boolean;
   }
 >;
@@ -39,8 +41,9 @@ export const ChainActionButton = ({
   const [showModal, setShowModal] = useState(false);
 
   const onClick = useCallback(async () => {
-    const resolvedAction =
-      typeof action === 'function' ? await action() : action;
+    const resolvedAction = await (typeof action === 'function'
+      ? action()
+      : action);
 
     const identity = await fetchIdentity();
     if (!identity) {
@@ -51,13 +54,14 @@ export const ChainActionButton = ({
     if (identity.kind === 'partisia') {
       const sdk = getPartisiaSdk(identity);
 
-      await sdk.signMessage({
+      const result = await sdk.signMessage({
         contract: resolvedAction.contract,
         payload: resolvedAction.payload,
         payloadType: resolvedAction.payloadType,
         dontBroadcast: false,
       });
-      onSuccess?.();
+
+      onSuccess?.(result.trxHash);
       return true;
     }
 

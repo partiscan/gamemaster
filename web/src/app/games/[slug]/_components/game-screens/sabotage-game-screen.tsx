@@ -33,12 +33,10 @@ export const SabotageGameScreen: FC<Props> = ({ game }) => {
             key={player}
             variant='ghost'
             className='relative h-fit'
-            action={() =>
-              actions.inputAction(
-                i,
-                i === currentPlayer ? 'protect' : 'sabotage',
-              )
-            }
+            action={actions.inputAction(
+              i,
+              i === currentPlayer ? 'protect' : 'sabotage',
+            )}
             disabled={
               currentPlayer < 0 ||
               gameState.currentGame.status !== 'in-progress'

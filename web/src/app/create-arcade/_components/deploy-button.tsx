@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { signTransaction } from '@/lib/partisia';
+import { ChainActionButton } from '@/components/chain-action-button';
+import { useIdentity } from '@/components/context/identity/identity.context';
 import { deployGame } from '@/server/create-arcade/deploy-game';
 import { useRouter } from 'next/navigation';
 
@@ -9,21 +9,17 @@ const ZK_CONTRACT = '018bc1ccbb672b87710327713c97d43204905082cb';
 
 export const DeployButton = () => {
   const router = useRouter();
+  const identity = useIdentity();
+  if (!identity) return;
+
   return (
-    <Button
-      onClick={async () => {
-        const gamePayload = await deployGame();
-
-        const message = await signTransaction(ZK_CONTRACT, gamePayload);
-        if (!message) {
-          console.error('Failed to get the transaction hash');
-          return;
-        }
-
-        router.push(`/deploying/${message.trxHash}`);
+    <ChainActionButton
+      action={() => deployGame(identity.address, ZK_CONTRACT)}
+      onSuccess={(txHash) => {
+        router.push(`/deploying/${txHash}`);
       }}
     >
       Deploy
-    </Button>
+    </ChainActionButton>
   );
 };

@@ -1,11 +1,7 @@
 import { guess as gamemasterGuess } from '@/contracts_gen/clients/gamemaster';
 import { ChainAction } from '@/server/chain-actions/types';
-import {
-  ContractAbi
-} from '@partisiablockchain/abi-client';
-import {
-  BlockchainPublicKey
-} from '@partisiablockchain/zk-client';
+import { ContractAbi } from '@partisiablockchain/abi-client';
+import { BlockchainPublicKey } from '@partisiablockchain/zk-client';
 import { BaseActions } from './base-actions';
 
 export class GuessTheNumberActions extends BaseActions {
@@ -18,12 +14,14 @@ export class GuessTheNumberActions extends BaseActions {
     super(contract, address, abi, engineKeys);
   }
 
-  public secretNumberInput(secret: number): ChainAction {
+  public secretNumberInput(secret: number): Promise<ChainAction> {
     const rpc = this.inputZkSecret('on_secret_input', secret);
-    return this.actionWithHexPayload(rpc);
+    return this.actionWithHexPayload(rpc, {
+      cost: 35_000,
+    });
   }
 
-  public guess(guess: number): ChainAction {
+  public guess(guess: number): Promise<ChainAction> {
     const rpc = gamemasterGuess(guess);
     return this.actionWithHexPayload(rpc);
   }

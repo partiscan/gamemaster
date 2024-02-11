@@ -20,7 +20,7 @@ export class SabotageActions extends BaseActions {
   public inputAction(
     playerIndex: number,
     action: 'protect' | 'sabotage',
-  ): ChainAction {
+  ): Promise<ChainAction> {
     const actionBit = action === 'protect' ? PROTECT_ACTION : SABOTAGE_ACTION;
     const secret = actionBit | (playerIndex & PLAYER_BITS);
     const rpc = this.inputZkSecret('on_secret_input', secret);

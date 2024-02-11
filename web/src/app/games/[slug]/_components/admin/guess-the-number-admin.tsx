@@ -36,7 +36,7 @@ export const GuessTheNumberAdmin = () => {
           onValueChange={(value) => setSecretNumber(value[0])}
         />
         <ChainActionButton
-          action={actions.secretNumberInput(-Math.floor((MAX_NUMBER - 1) / 2))}
+          action={() => actions.secretNumberInput(secretNumber)}
           disabled={!canGameStart}
         >
           Set Secret Number

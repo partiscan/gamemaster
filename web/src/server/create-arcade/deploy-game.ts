@@ -9,6 +9,8 @@ import {
 import { BN } from '@secata-public/bitmanipulation-ts';
 import fs from 'fs';
 import { getPendingGameSettings } from './get-pending-game-settings';
+import { ChainAction } from '../chain-actions/types';
+import { payloadToChainAction } from '../partisia.client';
 
 const gamemasterContract = fs.readFileSync(
   process.cwd() + '/src/contracts_gen/gamemaster/gamemaster.zkwa',
@@ -18,10 +20,16 @@ const gamemasterAbi = fs.readFileSync(
   process.cwd() + '/src/contracts_gen/gamemaster/gamemaster.abi',
 );
 
-const GAS_DECIMALS = 4;
-const GAS_DECIMALS_MULTIPLIER = 10 ** GAS_DECIMALS;
+const MPC_DECIMALS = 4;
+const MPC_DECIMALS_MULTIPLIER = 10 ** MPC_DECIMALS;
 
-export const deployGame = async (): Promise<string> => {
+const GAS_DEPLOYMENT_COST = 2_500_000;
+const MPC_REQUIRED_STAKES = 2_000;
+
+export const deployGame = async (
+  account: string,
+  contract: string,
+): Promise<ChainAction> => {
   const gameMasterInit = getGameMasterInit();
   const binderId = 5;
 
@@ -29,12 +37,14 @@ export const deployGame = async (): Promise<string> => {
     gamemasterContract,
     gameMasterInit,
     gamemasterAbi,
-    new BN(2000 * GAS_DECIMALS_MULTIPLIER),
+    new BN(MPC_REQUIRED_STAKES * MPC_DECIMALS_MULTIPLIER),
     [],
     binderId,
   );
 
-  return deployment.toString('hex');
+  return payloadToChainAction(account, contract, deployment, {
+    cost: GAS_DEPLOYMENT_COST,
+  });
 };
 
 const getGameMasterInit = (): Buffer => {
@@ -56,11 +66,11 @@ const getGameMasterInit = (): Buffer => {
       };
     }
 
-    if (setting.gameType === "split-or-conquer") {
+    if (setting.gameType === 'split-or-conquer') {
       return {
         discriminant: GameSettingsD.SplitOrConquer,
         splitPoints: setting.splitPoints,
-      }
+      };
     }
 
     throw new Error('Unknown game type');

@@ -23,6 +23,7 @@ export const SpinnerButton: FC<Props> = ({ onClick, disabled, ...rest }) => {
           .then((v) => setSpinner(v))
           .catch((e) => {
             console.log(e);
+          }).finally(() => {
             setSpinner(false);
           });
       });

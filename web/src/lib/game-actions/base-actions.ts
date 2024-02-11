@@ -1,5 +1,6 @@
 import { endGame } from '@/contracts_gen/clients/gamemaster';
 import { ChainAction } from '@/server/chain-actions/types';
+import { getNonce, payloadToChainAction } from '@/server/partisia.client';
 import {
   ContractAbi,
   FnRpcBuilder,
@@ -34,12 +35,14 @@ export class BaseActions {
     };
   }
 
-  public actionWithHexPayload(payload: Buffer): ChainAction {
-    return {
-      contract: this.contract,
-      payload: payload.toString('hex'),
-      payloadType: 'hex_payload',
-    };
+  public async actionWithHexPayload(
+    payload: Buffer,
+    settings?: {
+      cost?: number;
+      expirationInSeconds?: number;
+    },
+  ): Promise<ChainAction> {
+    return payloadToChainAction(this.address, this.contract, payload, settings);
   }
 
   public inputZkSecret(method: string, secret: number): Buffer {

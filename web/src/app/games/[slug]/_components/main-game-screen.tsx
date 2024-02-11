@@ -7,14 +7,12 @@ import { SabotageGameScreen } from './game-screens/sabotage-game-screen';
 import { SplitOrConquerGameScreen } from './game-screens/split-or-conquer-game-screen';
 
 export const MainGameScreen = () => {
-  const { gameState } = useGameState();
+  const { gameState, actualGame: game } = useGameState();
   const { currentGame } = gameState;
 
   if (currentGame.index === 0 && currentGame.status === 'not-started') {
     return <PreGameScreen />;
   }
-
-  const game = gameState.games[currentGame.index];
 
   if (game.kind === 'guess-the-number') {
     return <GuessTheNumberGameScreen game={game} />;

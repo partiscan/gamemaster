@@ -1,4 +1,6 @@
 import { StateBytes } from '@partisiablockchain/abi-client';
+import { partisiaCrypto } from 'partisia-crypto';
+import { ChainAction } from './chain-actions/types';
 
 export type ContractType = 'PUBLIC' | 'ZERO_KNOWLEDGE';
 
@@ -65,6 +67,11 @@ export const getContractState = async <T = string>(
   const shard = getShardByAddress(contract);
   const response = await fetch(
     `${READER_URL}/shards/Shard${shard}/blockchain/contracts/${contract}?requireContractState=true`,
+    {
+      next: {
+        revalidate: 30,
+      },
+    },
   );
   if (!response.ok) throw new Error('Unable to find game');
 
@@ -94,6 +101,64 @@ export const getContractState = async <T = string>(
   }
 
   throw new Error('Unsupported contract type');
+};
+
+export const getNonce = async (
+  account: string,
+): Promise<{
+  nonce: number;
+}> => {
+  if (!account) throw new Error('Missing account or shard');
+
+  const shard = getShardByAddress(account);
+  const baseUrl = `${READER_URL}/shards/Shard${shard}`;
+  const response = await fetch(`${baseUrl}/blockchain/account/${account}`, {
+    cache: 'no-store',
+  });
+
+  if (!response.ok) throw new Error('Couldnt get nonce');
+
+  return await response.json();
+};
+
+const DEFAULT_COST = 9000;
+const DEFAULT_EXPIRATION_IN_SECONDS = 1 * 60;
+export const payloadToChainAction = async (
+  address: string,
+  contract: string,
+  payload: Buffer,
+  settings?: {
+    cost?: number;
+    expirationInSeconds?: number;
+  },
+): Promise<ChainAction> => {
+  if (settings) {
+    const { nonce } = await getNonce(address);
+
+    const serialized = partisiaCrypto.transaction.serializedTransaction(
+      {
+        cost: settings.cost ?? DEFAULT_COST,
+        nonce,
+        validTo: (Date.now() +
+          (settings?.expirationInSeconds ?? DEFAULT_EXPIRATION_IN_SECONDS) *
+            1000) as any,
+      },
+      { contract },
+      payload,
+    );
+
+    return {
+      contract,
+      payload: serialized.toString('hex'),
+      payloadType: 'hex',
+    };
+  }
+
+  return {
+    contract,
+    payload: payload.toString('hex'),
+    payloadType: 'hex_payload',
+  };
 };
 
 const getShardByAddress = (address: string) => {

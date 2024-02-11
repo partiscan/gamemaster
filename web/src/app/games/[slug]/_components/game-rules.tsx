@@ -8,16 +8,12 @@ import { GameHeadline } from './typography/game-headline';
 import { GameSubheader } from './typography/game-subheader';
 
 export const GameRules = () => {
-  const {
-    gameState: { currentGame, games },
-  } = useGameState();
-  const game = games[currentGame.index];
-
+  const { actualGame: game } = useGameState();
   const gameDetails = GAMES.find((g) => g.id === game.kind);
   if (!gameDetails) return null;
 
   return (
-    <div className='mx-auto flex  w-full max-w-2xl flex-col items-center gap-0 bg-slate-200 text-center md:flex-row md:items-start md:gap-2 md:text-left mb-2'>
+    <div className='mx-auto mb-2  flex w-full max-w-2xl flex-col items-center gap-0 bg-slate-200 text-center md:flex-row md:items-start md:gap-2 md:text-left'>
       <Image
         className='shrink grow-0 rounded'
         src={`/assets/games/${game.kind}.webp`}

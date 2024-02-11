@@ -16,9 +16,11 @@ export class SplitOrConquerActions extends BaseActions {
     super(contract, address, abi, engineKeys);
   }
 
-  public inputAction(action: 'split' | 'conquer'): ChainAction {
+  public inputAction(action: 'split' | 'conquer'): Promise<ChainAction> {
     const secret = action === 'split' ? SPLIT_ACTION : CONQUER_ACTION;
     const rpc = this.inputZkSecret('on_secret_input', secret);
-    return this.actionWithHexPayload(rpc);
+    return this.actionWithHexPayload(rpc, {
+      cost: 28_550,
+    });
   }
 }
