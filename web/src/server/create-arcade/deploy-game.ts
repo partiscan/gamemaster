@@ -23,7 +23,7 @@ const gamemasterAbi = fs.readFileSync(
 const MPC_DECIMALS = 4;
 const MPC_DECIMALS_MULTIPLIER = 10 ** MPC_DECIMALS;
 
-const GAS_DEPLOYMENT_COST = 5_000_000;
+const GAS_DEPLOYMENT_COST = 10_000_000;
 const MPC_REQUIRED_STAKES = 2_000;
 
 export const deployGame = async (

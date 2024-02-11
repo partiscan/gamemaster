@@ -24,6 +24,14 @@ export const GameStatus = () => {
     );
   }
 
+  if (currentGame.status === 'calculating') {
+    return (
+      <div className='text-center text-xl font-semibold uppercase'>
+        Calculating results
+      </div>
+    );
+  }
+
   if (currentGame.status === 'finished') {
     return (
       <div className='text-center text-xl font-semibold uppercase'>

@@ -55,7 +55,7 @@ export const GameStateProvider: React.FC<
 
   const isGameEnded =
     gameState.currentGame.status === 'finished' &&
-    gameState.currentGame.index >= gameState.games.length;
+    gameState.currentGame.index >= gameState.games.length - 1;
 
   return (
     <GameStateContext.Provider

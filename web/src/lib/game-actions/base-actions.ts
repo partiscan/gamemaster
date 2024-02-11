@@ -1,6 +1,6 @@
 import { endGame } from '@/contracts_gen/clients/gamemaster';
 import { ChainAction } from '@/server/chain-actions/types';
-import { getNonce, payloadToChainAction } from '@/server/partisia.client';
+import { payloadToChainAction } from '@/server/partisia.client';
 import {
   ContractAbi,
   FnRpcBuilder,

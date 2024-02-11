@@ -91,6 +91,8 @@ pub enum GameStatus {
     #[discriminant(1)]
     InProgress {},
     #[discriminant(2)]
+    Calculating {},
+    #[discriminant(3)]
     Finished {},
 }
 

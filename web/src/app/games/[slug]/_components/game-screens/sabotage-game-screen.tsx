@@ -16,8 +16,6 @@ type Props = {
 export const SabotageGameScreen: FC<Props> = ({ game }) => {
   const { gameState } = useGameState();
   const address = useIdentity()?.address;
-  const calculating =
-    gameState.currentGame.status === 'finished' && !game.result;
 
   const actions = useSabotageActions();
 
@@ -33,7 +31,7 @@ export const SabotageGameScreen: FC<Props> = ({ game }) => {
             key={player}
             variant='ghost'
             className='relative h-fit'
-            action={actions.inputAction(
+            action={() => actions.inputAction(
               i,
               i === currentPlayer ? 'protect' : 'sabotage',
             )}

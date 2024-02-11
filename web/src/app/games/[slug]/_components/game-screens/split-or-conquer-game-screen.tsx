@@ -24,7 +24,10 @@ export const SplitOrConquerGameScreen: FC<Props> = ({ game }) => {
     2,
   );
 
-  if (gameState.currentGame.status === 'finished') {
+  if (
+    gameState.currentGame.status === 'finished' ||
+    gameState.currentGame.status === 'calculating'
+  ) {
     return <PlayerGrid />;
   }
 

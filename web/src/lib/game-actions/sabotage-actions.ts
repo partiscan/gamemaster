@@ -24,6 +24,6 @@ export class SabotageActions extends BaseActions {
     const actionBit = action === 'protect' ? PROTECT_ACTION : SABOTAGE_ACTION;
     const secret = actionBit | (playerIndex & PLAYER_BITS);
     const rpc = this.inputZkSecret('on_secret_input', secret);
-    return this.actionWithHexPayload(rpc);
+    return this.actionWithHexPayload(rpc, { cost: 30_000 });
   }
 }

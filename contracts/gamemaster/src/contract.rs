@@ -143,7 +143,7 @@ fn next_game(
     let variables_to_delete = zk_state.secret_variables.iter().map(|(k, _)| k).collect();
 
     let delete_variables_state_change = ZkStateChange::DeleteVariables {
-        variables_to_delete
+        variables_to_delete,
     };
 
     (state, vec![], vec![delete_variables_state_change])
@@ -160,7 +160,8 @@ fn end_game(
         "Action only for administrator"
     );
     assert!(
-        state.current_game.status == GameStatus::InProgress {},
+        state.current_game.status == GameStatus::InProgress {}
+            || state.current_game.status == GameStatus::Calculating {},
         "No game active"
     );
 
@@ -171,21 +172,25 @@ fn end_game(
             ShortnameZkComputation::from_u32(0x61),
             vec![SecretVarType::SabotageGameResult {}],
         ));
+
+        state.current_game.status = GameStatus::Calculating {};
     } else if let Game::SplitOrConquer { .. } = &mut state.games[state.current_game.index as usize]
     {
         zk_events.push(ZkStateChange::start_computation(
             ShortnameZkComputation::from_u32(0x62),
             vec![SecretVarType::SplitOrConquerResult {}],
         ));
+
+        state.current_game.status = GameStatus::Calculating {};
     } else {
         let current_game_index = state.current_game.index;
         if state.points.len() <= current_game_index as usize {
             let points = vec![0; state.players.len()];
             add_points(&mut state.points, &points);
         }
-    }
 
-    state.current_game.status = GameStatus::Finished {};
+        state.current_game.status = GameStatus::Finished {};
+    }
 
     (state, vec![], zk_events)
 }
@@ -388,6 +393,7 @@ fn on_variables_opened(
             );
 
             add_points(&mut state.points, &game_points);
+            state.current_game.status = GameStatus::Finished {};
 
             (state, vec![], vec![])
         }
@@ -410,6 +416,7 @@ fn on_variables_opened(
                     calculate_split_or_conquer_points(&state.players, result, *split_points);
 
                 add_points(&mut state.points, &game_points);
+                state.current_game.status = GameStatus::Finished {};
             }
 
             (state, vec![], vec![])

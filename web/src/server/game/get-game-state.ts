@@ -32,7 +32,7 @@ export type GameState = {
   players: string[];
   currentGame: {
     index: number;
-    status: 'not-started' | 'in-progress' | 'finished';
+    status: 'not-started' | 'in-progress' | 'finished' | 'calculating';
   };
   games: Array<GuessTheNumberGame | SabotageGame | SplitOrConquerGame>;
   points: Array<Array<number>>;
@@ -98,9 +98,10 @@ export const getGameState = async (id: string): Promise<GameState | null> => {
 
 function toGameStatus(
   discriminant: GameStatusD,
-): 'not-started' | 'in-progress' | 'finished' {
+): GameState['currentGame']['status'] {
   if (discriminant === GameStatusD.NotStarted) return 'not-started';
   if (discriminant === GameStatusD.InProgress) return 'in-progress';
+  if (discriminant === GameStatusD.Calculating) return 'calculating';
   if (discriminant === GameStatusD.Finished) return 'finished';
 
   throw new Error('Unknown game state ' + discriminant);
@@ -109,8 +110,8 @@ function toGameStatus(
 const getTestState = (): GameState => ({
   administrator: '00527092bfb4b35a0331fe066199a41d45c213c368',
   currentGame: {
-    index: 3,
-    status: 'finished',
+    index: 2,
+    status: 'calculating',
   },
   players: [
     '00527092bfb4b35a0331fe066199a41d45c213c368',
